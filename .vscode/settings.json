@@ -1,0 +1,15 @@
+{
+  "java.project.sourcePaths": ["src"],
+  "java.project.outputPath": "bin",
+  "java.project.referencedLibraries": ["lib/**/*.jar"],
+  "java.configuration.runtimes": [
+    {
+      "name": "JavaSE-1.8",
+      "path": "/usr/lib/jvm/java-8-openjdk"
+    },
+    {
+      "name": "JavaSE-24",
+      "path": "/usr/lib/jvm/java-24-openjdk"
+    }
+  ]
+}
