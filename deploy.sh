@@ -1,27 +1,71 @@
 #!/bin/bash
 # filepath: deploy.sh
 
-# Ruta de Tomcat
+# Vars
 TOMCAT_HOME="/home/lost/Documents/apache-tomcat-9.0.1"
-
-# Nombre de la aplicación
+TOMCAT_BIN="$TOMCAT_HOME/bin"
 APP_NAME="virtual-library"
-
-# Directorio de despliegue
 DEPLOY_DIR="$TOMCAT_HOME/webapps/$APP_NAME"
 
-# Limpiar despliegue anterior
+# Crear env files
+
+if [ -f .env ]; then
+    export $(grep -v '^#' .env | xargs)
+fi
+
+SETENV_SH="$TOMCAT_BIN/setenv.sh"
+SETENV_BAT="$TOMCAT_BIN/setenv.bat"
+
+EXPECTED_VARS=("DB_URL" "DB_USER" "DB_PASSWORD")
+
+update_env_file() {
+    local file="$1"
+    local mode="$2"
+
+    if [ ! -f "$file" ]; then
+        echo "Creando archivo: $file"
+        touch "$file"
+
+        if [[ "$mode" == "sh" ]]; then
+            echo "#!/bin/sh" >> "$file"
+            chmod +x "$file"
+        else
+            echo '@echo off' >> "$file"
+        if
+    fi
+
+    declare -A current_vars
+    while IFS='=' read -r key value;
+        do current_vars["$key"]="$value"
+    done < <(grep -E "^(export |set )?DB_" "$file" | sed 's/export //g' | sed 's/set //g')
+
+    for var in "${EXPECTED_VARS[@]}" do
+        new_value="${!var}"
+        current_value="${current_vars[$var]}"
+
+        if [[ "$current_value" != "$new_value" ]]; then
+            echo "Actualizando $var en $file"
+            if [[ "$mode" == "sh" ]]; then
+                echo "export $var=\"$new_value\"" >> "$file"
+            else
+                echo "set $var=$new_value" >> "$file"
+            fi
+        fi
+    done
+}
+
+# Actualizar archivos de entorno
+update_env_file "$SETENV_SH" "sh"
+update_env_file "$SETENV_BAT" "bat"
+
+# 📌 Despliegue de la aplicación
+echo "Limpiando despliegue anterior..."
 rm -rf "$DEPLOY_DIR"
-
-
-# Crear nuevo directorio
 mkdir -p "$DEPLOY_DIR"
 
 # Copiar archivos
 cp -r WebContent/* "$DEPLOY_DIR"
 cp -r bin/* "$DEPLOY_DIR/WEB-INF/classes"
 
-echo "Despliegue completado en $DEPLOY_DIR"
 
-# EN-TODO: Update the build script
-# ES-TODO: Actualizar el script de construcciòn
+echo "✅ Despliegue completado en $DEPLOY_DIR"
