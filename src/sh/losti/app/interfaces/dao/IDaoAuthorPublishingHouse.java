@@ -1,4 +1,4 @@
-package sh.losti.app.interfaces;
+package sh.losti.app.interfaces.dao;
 
 public interface IDaoAuthorPublishingHouse {
 

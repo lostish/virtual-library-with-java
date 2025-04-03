@@ -8,8 +8,15 @@
       "path": "/usr/lib/jvm/java-8-openjdk"
     },
     {
+      "name": "JavaSE-17",
+      "path": "/usr/lib/jvm/java-17-openjdk",
+      "default": true
+    },
+    {
       "name": "JavaSE-24",
       "path": "/usr/lib/jvm/java-24-openjdk"
     }
-  ]
+  ],
+  "java.jdt.ls.vmargs": "-Djavax.servlet.api.version=4.0.1",
+  "java.configuration.updateBuildConfiguration": "automatic"
 }

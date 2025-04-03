@@ -20,8 +20,7 @@ Technologies:
 
 Features:
 
-- Section management with cookies
-- Request validation with sections
+- Request validation with Account data
 - Book creation, filtering, dynamic routes
 - Account management
 
@@ -48,7 +47,7 @@ By default, the bin folder is used to store the project compilation.
 
 - [lostish](https://github.com/lostish)
 - [moixKei](https://github.com/moixKei)
-- []()
+- [FLUIDACREW](https://github.com/FLUIDACREW)
 
 This project is completely open to contributions from other programmers who are learning or want to contribute.
 
@@ -97,7 +96,7 @@ Por defecto, la carpeta bin se utiliza para almacenar la compilación del proyec
 
 - [lostish](https://github.com/lostish)
 - [moixKei](https://github.com/moixKei)
-- []()
+- [FLUIDACREW](https://github.com/FLUIDACREW)
 
 Este proyecto esta totalmente abierto a contribuciones de otros programadores que esten aprendiendo o quieran dar su pequeño grano de arena
 

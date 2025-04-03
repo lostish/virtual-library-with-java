@@ -14,7 +14,7 @@ if [ -f .env ]; then
 fi
 
 SETENV_SH="$TOMCAT_BIN/setenv.sh"
-SETENV_BAT="$TOMCAT_BIN/setenv.bat"
+#SETENV_BAT="$TOMCAT_BIN/setenv.bat"
 
 EXPECTED_VARS=("DB_URL" "DB_USER" "DB_PASSWORD")
 
@@ -31,7 +31,7 @@ update_env_file() {
             chmod +x "$file"
         else
             echo '@echo off' >> "$file"
-        if
+        fi
     fi
 
     declare -A current_vars
@@ -39,11 +39,11 @@ update_env_file() {
         do current_vars["$key"]="$value"
     done < <(grep -E "^(export |set )?DB_" "$file" | sed 's/export //g' | sed 's/set //g')
 
-    for var in "${EXPECTED_VARS[@]}" do
-        new_value="${!var}"
+    for var in "${EXPECTED_VARS[@]}"; do
+        new_value="${!var:-}"
         current_value="${current_vars[$var]}"
 
-        if [[ "$current_value" != "$new_value" ]]; then
+        if [[ -z "$current_value" || "$current_value" != "$new_value" ]]; then
             echo "Actualizando $var en $file"
             if [[ "$mode" == "sh" ]]; then
                 echo "export $var=\"$new_value\"" >> "$file"
@@ -56,16 +56,21 @@ update_env_file() {
 
 # Actualizar archivos de entorno
 update_env_file "$SETENV_SH" "sh"
-update_env_file "$SETENV_BAT" "bat"
+#update_env_file "$SETENV_BAT" "bat"
 
 # 📌 Despliegue de la aplicación
 echo "Limpiando despliegue anterior..."
 rm -rf "$DEPLOY_DIR"
-mkdir -p "$DEPLOY_DIR"
+mkdir -p "$DEPLOY_DIR/WEB-INF/classes"
+mkdir -p "$DEPLOY_DIR/WEB-INF/lib"
 
-# Copiar archivos
-cp -r WebContent/* "$DEPLOY_DIR"
-cp -r bin/* "$DEPLOY_DIR/WEB-INF/classes"
+# Copiar archivos JSP y recursos estáticos
+cp -r src/sh/losti/webapp/* "$DEPLOY_DIR"
+# Copiar archivos compilados al directorio WEB-INF/classes
+cp -r bin/sh/losti/app/* "$DEPLOY_DIR/WEB-INF/classes"
+# Copiar dependencias al directorio WEB-INF/lib
+cp -r lib/*.jar "$DEPLOY_DIR/WEB-INF/lib"
+
 
 
 echo "✅ Despliegue completado en $DEPLOY_DIR"

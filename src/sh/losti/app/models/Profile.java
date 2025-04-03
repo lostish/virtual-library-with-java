@@ -1,5 +1,23 @@
 package sh.losti.app.models;
 
-public class Profile {
+import java.util.Date;
 
+public class Profile {
+    private String id;
+    private String userId;
+    private String biography;
+    private String networks;
+    private String books;
+    private Date createdAt;
+    private Date updatedAt;
+
+    public Profile(String id, String userId, String biography, String networks, String books, Date createdAt, Date updatedAt) {
+        this.id = id;
+        this.userId = userId;
+        this.biography = biography;
+        this.networks = networks;
+        this.books = books;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 }
