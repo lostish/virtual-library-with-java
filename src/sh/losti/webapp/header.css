@@ -1,0 +1,76 @@
+.header {
+  background-color: black;
+  border-bottom: solid 1px hsl(240, 4%, 16%);
+  color: white;
+}
+
+.header-wrapper {
+  max-width: 1280px; /* container mx-auto */
+  margin: 0 auto;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-icon {
+  height: 24px;
+  width: 24px;
+  color: hsl(160, 84%, 39%);
+}
+
+.logo-text {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.nav {
+  display: none;
+}
+
+.nav a {
+  font-size: 0.875rem;
+  transition: color 0.3s;
+  color: inherit;
+}
+
+.nav a:hover {
+  color: #34d399;
+}
+
+@media (min-width: 768px) {
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+}
+
+/* Botones */
+.auth-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.auth-links .login {
+  display: none;
+  font-size: 0.875rem;
+  transition: color 0.3s;
+}
+
+.auth-links .login:hover {
+  color: #34d399;
+}
+
+@media (min-width: 768px) {
+  .auth-links .login {
+    display: inline-block;
+  }
+}
