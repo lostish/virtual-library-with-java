@@ -6,6 +6,8 @@ TOMCAT_HOME="/home/lost/Documents/apache-tomcat-9.0.1"
 TOMCAT_BIN="$TOMCAT_HOME/bin"
 APP_NAME="virtual-library"
 DEPLOY_DIR="$TOMCAT_HOME/webapps/$APP_NAME"
+RESOURCES_SOURCE_DIR="src/sh/losti/resources/books"
+RESOURCES_DEPLOY_DIR="$DEPLOY_DIR/WEB-INF/resources"
 
 # Crear env files
 
@@ -63,6 +65,7 @@ echo "Limpiando despliegue anterior..."
 rm -rf "$DEPLOY_DIR"
 mkdir -p "$DEPLOY_DIR/WEB-INF/classes"
 mkdir -p "$DEPLOY_DIR/WEB-INF/lib"
+mkdir -p "$DEPLOY_DIR/WEB-INF/resources"
 
 # Copiar archivos JSP y recursos estáticos
 cp -r src/sh/losti/webapp/* "$DEPLOY_DIR"
@@ -70,6 +73,8 @@ cp -r src/sh/losti/webapp/* "$DEPLOY_DIR"
 cp -r bin/sh/losti/app/* "$DEPLOY_DIR/WEB-INF/classes"
 # Copiar dependencias al directorio WEB-INF/lib
 cp -r lib/*.jar "$DEPLOY_DIR/WEB-INF/lib"
+# Copiar archivos PDF protegidos
+cp -r "$RESOURCES_SOURCE_DIR"/* "$RESOURCES_DEPLOY_DIR"
 
 
 
