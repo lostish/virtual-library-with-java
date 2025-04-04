@@ -80,13 +80,9 @@ strong {
 
 a {
   color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  text-decoration: none;
+  text-underline-offset: 0px;
   transition: color 0.2s ease;
-}
-
-a:hover {
-  color: hsl(160, 84%, 39%);
 }
 
 button {
@@ -138,7 +134,7 @@ pre {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
   font-size: 0.875rem;
-  background-color: #1c1c1c;
+  background-color: hsl(0, 0%, 11%);
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
 }
@@ -161,8 +157,21 @@ blockquote {
   border-radius: 0.375rem;
   font-size: 0.875rem;
   font-weight: 500;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
   padding: 10px 16px;
+  gap: 0.5rem;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  outline: none;
+  border: 1px solid transparent;
+}
+
+.button svg {
+  pointer-events: none;
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
 }
 
 .button-primary {
@@ -172,4 +181,37 @@ blockquote {
 
 .button-primary:hover {
   background-color: hsl(161, 94%, 30%);
+}
+
+.button-dark {
+  background-color: hsl(240, 10%, 4%);
+  color: hsl(0, 0%, 98%);
+  border: 1px solid hsl(240, 5%, 26%);
+}
+
+.button-dark:hover {
+  background-color: hsl(240, 4%, 16%);
+  color: hsl(240, 6%, 90%);
+}
+
+.button:focus-visible {
+  outline: 2px solid hsl(160, 84%, 39%);
+  outline-offset: 2px;
+}
+
+.button:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.button:disabled:hover {
+  background-color: hsl(240, 10%, 4%);
+  color: hsl(0, 0%, 98%);
+  border: 1px solid hsl(240, 5%, 26%);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
 }

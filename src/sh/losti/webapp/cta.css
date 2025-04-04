@@ -1,0 +1,60 @@
+.cta-section {
+  padding: 80px 20px;
+}
+
+.cta-section h2 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.cta-section p {
+  font-size: 1.1rem;
+  color: hsl(240, 5%, 70%);
+  margin-bottom: 40px;
+}
+
+.cta-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+@media (min-width: 600px) {
+  .cta-buttons {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.cta-primary {
+  background-color: hsl(160, 84%, 39%);
+  color: black;
+  padding: 15px 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cta-primary:hover {
+  background-color: hsl(161, 94%, 30%);
+}
+
+.cta-secondary {
+  background-color: hsl(240, 4%, 20%);
+  color: white;
+  padding: 15px 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: 1px solid hsl(240, 4%, 40%);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cta-secondary:hover {
+  background-color: hsl(240, 4%, 30%);
+}

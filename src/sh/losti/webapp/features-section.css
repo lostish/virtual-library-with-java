@@ -1,0 +1,88 @@
+/* === Sección de Características === */
+.features-section {
+  padding: 5rem 1rem; /* py-20 */
+}
+
+/* === Contenedor principal === */
+.features-container {
+  max-width: 48rem; /* max-w-3xl */
+  margin: 0 auto 4rem; /* mx-auto mb-16 */
+  text-align: center;
+}
+
+/* === Títulos === */
+.features-title {
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .features-title {
+    font-size: 2.25rem; /* md:text-4xl */
+  }
+}
+
+.features-title span {
+  color: hsl(160, 84%, 39%); /* text-emerald-500 */
+}
+
+.features-description {
+  color: hsl(240, 5%, 65%); /* text-zinc-400 */
+}
+
+/* === Grid de Características === */
+.features-grid {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .features-grid {
+    grid-template-columns: repeat(3, 1fr); /* md:grid-cols-3 */
+  }
+}
+
+/* === Tarjetas de Características === */
+.feature-card {
+  background-color: hsla(240, 6%, 10%, 0.5); /* bg-zinc-900/50 */
+  border: 1px solid hsl(240, 5%, 26%); /* border-zinc-800 */
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  text-align: left;
+  transition: border-color 0.3s;
+}
+
+.feature-card:hover {
+  border-color: hsla(160, 84%, 39%, 0.502); /* hover:border-emerald-500/50 */
+}
+
+/* === Icono de la Característica === */
+.feature-icon-container {
+  background-color: hsla(240, 4%, 16%, 0.5); /* bg-zinc-800/50 */
+  border-radius: 50%;
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem 0;
+  overflow: hidden;
+}
+
+.feature-icon-container svg {
+  width: 2rem;
+  height: 2rem;
+  display: block;
+}
+
+/* === Texto de la Característica === */
+.feature-title {
+  font-size: 1.25rem; /* text-xl */
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.feature-description {
+  color: #a1a1aa; /* text-zinc-400 */
+}

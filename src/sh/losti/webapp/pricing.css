@@ -1,0 +1,111 @@
+.pricing-section {
+  padding: 80px 20px;
+}
+
+.pricing-header h2 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.highlight {
+  color: hsl(160, 84%, 39%);
+}
+
+.pricing-header p {
+  color: hsl(240, 5%, 70%);
+  margin-bottom: 40px;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.pricing-card {
+  position: relative;
+  background-color: hsl(240, 5%, 10%);
+  border: 1px solid hsl(240, 4%, 16%);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: left;
+  transition: border-color 0.3s;
+}
+
+.pricing-card:hover {
+  border-color: hsl(160, 84%, 39%);
+}
+
+.plan-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.plan-price {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.plan-button {
+  background-color: hsl(240, 4%, 20%);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.plan-button:hover {
+  background-color: hsl(240, 4%, 30%);
+}
+
+.popular {
+  border: 2px solid hsl(160, 84%, 39%);
+}
+
+.popular-label {
+  background-color: hsl(160, 84%, 39%);
+  color: black;
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 5px 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 5px;
+}
+
+.popular-button {
+  background-color: hsl(160, 84%, 39%);
+  color: black;
+}
+
+.popular-button:hover {
+  background-color: hsl(161, 94%, 30%);
+}
+
+.plan-features {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.plan-features li {
+  display: flex;
+  flex-flow: row nowrap;
+  place-items: center;
+  font-size: 0.9rem;
+  color: hsl(240, 5%, 70%);
+  margin-bottom: 8px;
+  gap: 0.25rem;
+}
+
+.plan-features li svg {
+  width: 1rem;
+  height: 1rem;
+  color: hsl(160, 84%, 39%);
+}
