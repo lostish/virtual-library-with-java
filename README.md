@@ -7,6 +7,10 @@ A project to explore and learn more about the Java ecosystem and how to create w
 - [**English Ver**](./README.md#getting-started-en)
 - [**Spanish Ver**](./README.md#empezando-es)
 
+### Special thanks <3
+
+I had a lot of trouble using a SQL database, but this [article](https://luyanakat.github.io/mssql_arch/) by [luyanakat](https://github.com/luyanakat) was incredibly helpful. Thank you so much! <3
+
 ## Getting Started (En)
 
 Virtual Library is a web platform built in Java where you can download and upload your favorite books. All you need is an account.

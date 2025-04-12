@@ -3,32 +3,33 @@ package sh.losti.app.models;
 import java.util.Date;
 
 public class Books {
-    private final String id;
-    private final String name;
-    private final String nameId;
-    private final String description;
-    private final String biography;
-    private final boolean published;
-    private final String editorials;
-    private final int views;
-    private final int saves;
-    private final int downloads;
-    private final Date createdAt;
-    private final Date updatedAt;
+    private int id;
+    private String name;
+    private String nameId;
+    private String description;
+    private String biography;
+    private boolean published;
+    private String editorials;
+    private int views;
+    private int saves;
+    private int downloads;
+    private Date createdAt;
+    private Date updatedAt;
 
-    public Books(String id,
-                 String name,
-                 String nameId,
-                 String description,
-                 String biography,
-                 boolean published,
-                 String editorials,
-                 int views,
-                 int saves,
-                 int downloads,
-                 Date createdAt,
-                 Date updatedAt
-                ) {
+    public Books(
+            int id,
+            String name,
+            String nameId,
+            String description,
+            String biography,
+            boolean published,
+            String editorials,
+            int views,
+            int saves,
+            int downloads,
+            Date createdAt,
+            Date updatedAt
+    ) {
         this.id = id;
         this.name = name;
         this.nameId = nameId;

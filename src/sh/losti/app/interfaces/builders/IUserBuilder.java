@@ -5,7 +5,7 @@ import sh.losti.app.models.User;
 import java.util.Date;
 
 public interface IUserBuilder {
-    IUserBuilder setId(String id);
+    IUserBuilder setId(int id);
     IUserBuilder setName(String name);
     IUserBuilder setNameId(String nameId);
     IUserBuilder setPassword(String password);

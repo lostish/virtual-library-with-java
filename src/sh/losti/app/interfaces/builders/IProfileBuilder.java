@@ -5,7 +5,7 @@ import sh.losti.app.models.Profile;
 import java.util.Date;
 
 public interface IProfileBuilder {
-    IProfileBuilder setId(String id);
+    IProfileBuilder setId(int id);
     IProfileBuilder setUserId(String userId);
     IProfileBuilder setBiography(String biography);
     IProfileBuilder setNetworks(String networks);

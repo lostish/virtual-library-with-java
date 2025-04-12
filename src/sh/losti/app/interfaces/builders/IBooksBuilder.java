@@ -5,7 +5,7 @@ import sh.losti.app.models.Books;
 import java.util.Date;
 
 public interface IBooksBuilder {
-    IBooksBuilder setId(String id);
+    IBooksBuilder setId(int id);
     IBooksBuilder setName(String name);
     IBooksBuilder setNameId(String nameId);
     IBooksBuilder setDescription(String description);

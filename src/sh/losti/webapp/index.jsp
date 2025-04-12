@@ -245,7 +245,10 @@
 
           <div class="search-box">
             <div class="search-wrapper">
-              <div style="display: flex; flex-flow: row nowrap; gap: 0.875rem">
+              <form
+                action="search"
+                style="display: flex; flex-flow: row nowrap; gap: 0.875rem"
+              >
                 <input
                   type="text"
                   class="search-input"
@@ -268,7 +271,7 @@
                   </svg>
                   Buscar
                 </button>
-              </div>
+              </form>
               <div class="search-tags">
                 <span class="search-tag">Ficción</span>
                 <span class="search-tag">No ficción</span>

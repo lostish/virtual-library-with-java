@@ -3,14 +3,14 @@ package sh.losti.app.models;
 import java.util.Date;
 
 public class User {
-    private String id;
+    private int id;
     private String name;
     private String nameId;
     private String password;
     private Date createdAt;
     private Date updatedAt;
 
-    public User(String id, String name, String nameId, String password, Date createdAt, Date updatedAt) {
+    public User(int id, String name, String nameId, String password, Date createdAt, Date updatedAt) {
         this.id = id;
         this.name = name;
         this.nameId = nameId;

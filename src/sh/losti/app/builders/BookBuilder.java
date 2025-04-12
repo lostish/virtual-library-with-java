@@ -6,7 +6,7 @@ import sh.losti.app.models.Books;
 import java.util.Date;
 
 public class BookBuilder implements IBooksBuilder {
-    private String id;
+    private int id;
     private String name;
     private String nameId;
     private String description;
@@ -20,7 +20,7 @@ public class BookBuilder implements IBooksBuilder {
     private Date updatedAt;
 
     @Override
-    public IBooksBuilder setId(String id) {
+    public IBooksBuilder setId(int id) {
         this.id = id;
         return this;
     }

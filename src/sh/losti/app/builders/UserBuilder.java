@@ -6,7 +6,7 @@ import sh.losti.app.models.User;
 import java.util.Date;
 
 public class UserBuilder implements IUserBuilder {
-    private String id;
+    private int id;
     private String name;
     private String nameId;
     private String password;
@@ -14,7 +14,7 @@ public class UserBuilder implements IUserBuilder {
     private Date updatedAt;
 
     @Override
-    public IUserBuilder setId(String id) {
+    public IUserBuilder setId(int id) {
         this.id = id;
         return this;
     }

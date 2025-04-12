@@ -3,7 +3,7 @@ package sh.losti.app.models;
 import java.util.Date;
 
 public class Profile {
-    private String id;
+    private int id;
     private String userId;
     private String biography;
     private String networks;
@@ -11,7 +11,7 @@ public class Profile {
     private Date createdAt;
     private Date updatedAt;
 
-    public Profile(String id, String userId, String biography, String networks, String books, Date createdAt, Date updatedAt) {
+    public Profile(int id, String userId, String biography, String networks, String books, Date createdAt, Date updatedAt) {
         this.id = id;
         this.userId = userId;
         this.biography = biography;

@@ -15,12 +15,9 @@
         <welcome-file>default.htm</welcome-file>
         <welcome-file>default.jsp</welcome-file>
     </welcome-file-list>
-    <servlet>
-        <servlet-name>LibraryServlet</servlet-name>
-        <servlet-class>sh.losti.app.controllers.LibraryServlet</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>LibraryServlet</servlet-name>
+        <servlet-class>sh.losti.app.controllers.LibraryServlet</servlet-class>
         <url-pattern>/library/about/*</url-pattern>
     </servlet-mapping>
 </web-app>
