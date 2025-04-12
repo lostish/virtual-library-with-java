@@ -9,6 +9,7 @@ public class UserBuilder implements IUserBuilder {
     private int id;
     private String name;
     private String nameId;
+    private String email;
     private String password;
     private Date createdAt;
     private Date updatedAt;
@@ -32,6 +33,12 @@ public class UserBuilder implements IUserBuilder {
     }
 
     @Override
+    public IUserBuilder setEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    @Override
     public IUserBuilder setPassword(String password) {
         this.password = password;
         return this;
@@ -51,6 +58,6 @@ public class UserBuilder implements IUserBuilder {
 
     @Override
     public User build() {
-        return new User(id, name, nameId, password, createdAt, updatedAt);
+        return new User(id, name, nameId, email, password, createdAt, updatedAt);
     }
 }

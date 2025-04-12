@@ -4,7 +4,7 @@ import sh.losti.app.interfaces.config.ITablesConfig;
 
 public class SQLiteTablesConfig implements ITablesConfig {
     @Override
-    public String getEditorsTable() {
+    public String getEditorialsTable() {
         return """
                CREATE TABLE IF NOT EXISTS editorials (
                    id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -15,6 +15,18 @@ public class SQLiteTablesConfig implements ITablesConfig {
                    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
                    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
                );
+               """;
+    }
+
+    @Override
+    public String getEditorialsGenreTable() {
+        return """
+                CREATE TABLE IF NOT EXISTS editorial_genres (
+                    editorial_id INTEGER NOT NULL,
+                    genre TEXT NOT NULL,
+                    PRIMARY KEY (editorial_id, genre),
+                    FOREIGN KEY (editorial_id) REFERENCES editorials(id)
+                );
                """;
     }
 
@@ -32,6 +44,18 @@ public class SQLiteTablesConfig implements ITablesConfig {
                    FOREIGN KEY (editorial_id) REFERENCES editorials(id)
                );
              """;
+    }
+
+    @Override
+    public String getAuthorsGenreTable() {
+        return """
+                CREATE TABLE IF NOT EXISTS author_genres (
+                    author_id INTEGER NOT NULL,
+                    genre TEXT NOT NULL,
+                    PRIMARY KEY (author_id, genre),
+                    FOREIGN KEY (author_id) REFERENCES authors(id)
+                );
+               """;
     }
 
     @Override
@@ -87,7 +111,17 @@ public class SQLiteTablesConfig implements ITablesConfig {
     }
 
     @Override
-    public String getBookmarksTable() {
-        return "";
+    public String getBookInteractionTable() {
+        return """
+                CREATE TABLE IF NOT EXISTS user_book_interactions (
+                    user_id INTEGER NOT NULL,
+                    book_id INTEGER NOT NULL,
+                    interaction_type TEXT NOT NULL CHECK(interaction_type IN ('bookmark', 'favorite')),
+                    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    PRIMARY KEY (user_id, book_id, interaction_type),
+                    FOREIGN KEY (user_id) REFERENCES users(id),
+                    FOREIGN KEY (book_id) REFERENCES books(id)
+                );
+               """;
     }
 }

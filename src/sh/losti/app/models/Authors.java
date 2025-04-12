@@ -10,7 +10,16 @@ public class Authors {
     private String lastWorkId;
     private String editorialId;
 
-    public Authors(int id, String name, String nameId, String description, String imageUrl, String[] genresList, String lastWorkId, String editorialId) {
+    public Authors(
+            int id,
+            String name,
+            String nameId,
+            String description,
+            String imageUrl,
+            String[] genresList,
+            String lastWorkId,
+            String editorialId
+    ) {
         this.id = id;
         this.name = name;
         this.nameId = nameId;

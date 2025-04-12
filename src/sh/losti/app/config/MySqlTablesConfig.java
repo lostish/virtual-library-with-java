@@ -4,7 +4,7 @@ import sh.losti.app.interfaces.config.ITablesConfig;
 
 public class MySqlTablesConfig implements ITablesConfig {
     @Override
-    public String getEditorsTable() {
+    public String getEditorialsTable() {
         return """
                 CREATE TABLE IF NOT EXISTS editorials (
                     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -14,6 +14,18 @@ public class MySqlTablesConfig implements ITablesConfig {
                     avatar VARCHAR(512),
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                );
+               """;
+    }
+
+    @Override
+    public String getEditorialsGenreTable() {
+        return """
+                CREATE TABLE IF NOT EXISTS editorial_genres (
+                    editorial_id INT NOT NULL,
+                    genre VARCHAR(255) NOT NULL,
+                    PRIMARY KEY (editorial_id, genre),
+                    FOREIGN KEY (editorial_id) REFERENCES editorials(id)
                 );
                """;
     }
@@ -30,6 +42,18 @@ public class MySqlTablesConfig implements ITablesConfig {
                     last_work_id VARCHAR(64),
                     editorial_id INT,
                     FOREIGN KEY (editorial_id) REFERENCES editorials(id)
+                );
+               """;
+    }
+
+    @Override
+    public String getAuthorsGenreTable() {
+        return """
+                CREATE TABLE IF NOT EXISTS author_genres (
+                    author_id INT NOT NULL,
+                    genre VARCHAR(255) NOT NULL,
+                    PRIMARY KEY (author_id, genre),
+                    FOREIGN KEY (author_id) REFERENCES authors(id)
                 );
                """;
     }
@@ -86,7 +110,17 @@ public class MySqlTablesConfig implements ITablesConfig {
     }
 
     @Override
-    public String getBookmarksTable() {
-        return "";
+    public String getBookInteractionTable() {
+        return """
+                CREATE TABLE IF NOT EXISTS user_book_interactions (
+                    user_id INT NOT NULL,
+                    book_id INT NOT NULL,
+                    interaction_type ENUM('bookmark', 'favorite') NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    PRIMARY KEY (user_id, book_id, interaction_type),
+                    FOREIGN KEY (user_id) REFERENCES users(id),
+                    FOREIGN KEY (book_id) REFERENCES books(id)
+                );
+               """;
     }
 }

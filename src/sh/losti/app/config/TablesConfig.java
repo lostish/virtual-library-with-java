@@ -3,8 +3,8 @@ package sh.losti.app.config;
 import sh.losti.app.interfaces.config.ITablesConfig;
 
 public class TablesConfig {
-    // EN-TODO: Define the tables to be generated automatically
-    // ES-TODO: Definir las tablas a generar automaticamente
+    // EN-SUMMARY: Method factory for SQLite like MySQL
+    // ES-SUMMARY: Fábrica de métodos para SQLite como MySQL
     private TablesConfig() {}
 
     public static ITablesConfig sqlite() {
