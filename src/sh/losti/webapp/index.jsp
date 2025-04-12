@@ -18,7 +18,13 @@
   <body>
     <header class="header">
       <div class="header-wrapper">
-        <div class="logo">
+        <a
+          class="logo"
+          href="http://localhost:8080/virtual-library/"
+          hreflang="es"
+          target="_self"
+          rel="noreferrer noopener"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -37,7 +43,7 @@
             />
           </svg>
           <span class="logo-text">Virtual Library</span>
-        </div>
+        </a>
         <nav class="nav">
           <a href="#" hreflang="es" target="_self" rel="noreferrer noopener">
             Inicio
@@ -53,8 +59,23 @@
           </a>
         </nav>
         <div class="auth-links">
-          <a href="#" class="login"> Iniciar Sesión </a>
-          <button class="button button-primary">Registrarse</button>
+          <a
+            class="login"
+            href="http://localhost:8080/virtual-library/auth/sign-in"
+            hreflang="es"
+            target="_self"
+            rel="noreferrer noopener"
+          >
+            Iniciar Sesión
+          </a>
+          <a
+            class="button button-primary"
+            href="http://localhost:8080/virtual-library/auth/sign-up"
+            hreflang="es"
+            target="_self"
+            rel="noreferrer noopener"
+            >Registrarse</a
+          >
         </div>
       </div>
     </header>

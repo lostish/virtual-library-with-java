@@ -6,8 +6,8 @@ TOMCAT_HOME="/home/lost/Documents/apache-tomcat-9.0.1"
 TOMCAT_BIN="$TOMCAT_HOME/bin"
 APP_NAME="virtual-library"
 DEPLOY_DIR="$TOMCAT_HOME/webapps/$APP_NAME"
-RESOURCES_SOURCE_DIR="src/sh/losti/resources/books"
-RESOURCES_DEPLOY_DIR="$DEPLOY_DIR/WEB-INF/resources"
+RESOURCES_SOURCE_DIR="src/sh/losti/webapp/WEB-INF/resources/books"
+BOOK_RESOURCES_DEPLOY_DIR="$DEPLOY_DIR/WEB-INF/resources/books"
 
 # Crear env files
 
@@ -74,7 +74,7 @@ cp -r bin/sh/losti/app/* "$DEPLOY_DIR/WEB-INF/classes"
 # Copiar dependencias al directorio WEB-INF/lib
 cp -r lib/*.jar "$DEPLOY_DIR/WEB-INF/lib"
 # Copiar archivos PDF protegidos
-cp -r "$RESOURCES_SOURCE_DIR"/* "$RESOURCES_DEPLOY_DIR"
+cp -r "$RESOURCES_SOURCE_DIR"/* "$BOOK_RESOURCES_DEPLOY_DIR"
 
 
 
