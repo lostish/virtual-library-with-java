@@ -1,0 +1,64 @@
+.account-main {
+  position: relative;
+  text-align: left;
+  padding: 1rem 1.5rem;
+}
+
+.account-user-data {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 0 0 2.5rem 0;
+}
+
+.account-avatar-container {
+  position: relative;
+  width: 9rem;
+  height: 9rem;
+}
+
+.account-avatar-container .account-avatar-wrapper {
+  width: 9rem;
+  height: 9rem;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.account-avatar-wrapper[data-account-avatar-state="default"] {
+  background: hsl(0, 4%, 50%);
+}
+
+.account-avatar-container .account-avatar-edit-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  min-width: 2rem;
+  min-height: 2rem;
+  color: hsl(0, 0, 0);
+  border-radius: 9999px;
+  padding: 0;
+}
+
+.account-avatar-edit-btn svg {
+  min-width: 1rem;
+  min-height: 1rem;
+}
+
+.account-info-container {
+  display: flex;
+  flex: 1;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .account-user-data {
+    flex-flow: row nowrap;
+    align-items: start;
+  }
+  .account-info-container {
+    text-align: left;
+  }
+}

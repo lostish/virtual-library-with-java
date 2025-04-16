@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ingresa a tu cuenta - Virtual Library</title>
+    <title>Cambiar contraseña - Virtual Library</title>
     <link rel="stylesheet" href="../../globals.css" />
     <link rel="stylesheet" href="../forms.css" />
   </head>
@@ -32,13 +32,13 @@
               <span class="form-header-webname">LibroVerse</span>
             </div>
             <div class="form-header-metadata">
-              <h1>Iniciar Sesión</h1>
+              <h1>Cambiar contraseña</h1>
               <p>
-                Accede a tu biblioteca digital y continúa tu aventura literaria
+                Vuelve a tener acceso a tu cuenta facilmente cambiando la
+                contraseña por una nueva!
               </p>
             </div>
           </div>
-
           <form class="form-body">
             <div class="form-group">
               <label for="email">Correo electrónico</label>
@@ -53,14 +53,6 @@
             <div class="form-group">
               <div class="form-label-row">
                 <label for="password">Contraseña</label>
-                <a
-                  href="http://localhost:8080/virtual-library/auth/reset"
-                  hreflang="es"
-                  target="_self"
-                  rel="noreferrer noopener"
-                >
-                  ¿Olvidaste tu contraseña?
-                </a>
               </div>
               <input
                 type="password"
@@ -70,8 +62,20 @@
               />
             </div>
 
+            <div class="form-group">
+              <div class="form-label-row">
+                <label for="confirm-password">Confirmar Contraseña</label>
+              </div>
+              <input
+                type="password"
+                id="confirm-password"
+                placeholder="••••••••"
+                required
+              />
+            </div>
+
             <button type="submit" class="button button-primary">
-              Iniciar Sesión
+              Actualizar
             </button>
           </form>
 
@@ -85,29 +89,6 @@
                 rel="noreferrer noopener"
               >
                 Crear cuenta
-              </a>
-            </p>
-          </div>
-
-          <div class="form-legal">
-            <p>
-              Al iniciar sesión, aceptas nuestros
-              <a
-                href="http://localhost:8080/virtual-library/terms"
-                hreflang="es"
-                target="_self"
-                rel="noreferrer noopener"
-              >
-                Términos de Servicio
-              </a>
-              y
-              <a
-                href="http://localhost:8080/virtual-library/privacy"
-                hreflang="es"
-                target="_self"
-                rel="noreferrer noopener"
-              >
-                Política de Privacidad
               </a>
             </p>
           </div>

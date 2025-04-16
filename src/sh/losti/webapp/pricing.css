@@ -20,6 +20,7 @@
 .pricing-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  padding: 1.25rem 0;
   gap: 20px;
 }
 
@@ -46,21 +47,6 @@
   font-size: 2rem;
   font-weight: bold;
   margin: 10px 0;
-}
-
-.plan-button {
-  background-color: hsl(240, 4%, 20%);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  transition: background-color 0.3s;
-}
-
-.plan-button:hover {
-  background-color: hsl(240, 4%, 30%);
 }
 
 .popular {

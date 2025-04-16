@@ -34,6 +34,8 @@
 /* === Grid de Características === */
 .features-grid {
   display: grid;
+  max-width: 64rem;
+  margin: 0 auto;
   gap: 2rem;
 }
 

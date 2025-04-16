@@ -26,35 +26,3 @@
     justify-content: center;
   }
 }
-
-.cta-primary {
-  background-color: hsl(160, 84%, 39%);
-  color: black;
-  padding: 15px 30px;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.cta-primary:hover {
-  background-color: hsl(161, 94%, 30%);
-}
-
-.cta-secondary {
-  background-color: hsl(240, 4%, 20%);
-  color: white;
-  padding: 15px 30px;
-  font-size: 1rem;
-  font-weight: bold;
-  border: 1px solid hsl(240, 4%, 40%);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.cta-secondary:hover {
-  background-color: hsl(240, 4%, 30%);
-}

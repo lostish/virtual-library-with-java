@@ -48,7 +48,12 @@
           <a href="#" hreflang="es" target="_self" rel="noreferrer noopener">
             Inicio
           </a>
-          <a href="#" hreflang="es" target="_self" rel="noreferrer noopener">
+          <a
+            href="http://localhost:8080/virtual-library/catalog/"
+            hreflang="es"
+            target="_self"
+            rel="noreferrer noopener"
+          >
             Catálogo
           </a>
           <a href="#" hreflang="es" target="_self" rel="noreferrer noopener">
@@ -95,8 +100,20 @@
               Lee, aprende y explora sin límites.
             </p>
             <div class="hero-buttons">
-              <a class="button button-primary">Comenzar ahora</a>
-              <a class="button button-dark">
+              <a
+                class="button button-primary"
+                href="http://localhost:8080/virtual-library/auth/sign-in"
+                target="_self"
+                rel="noreferrer noopener"
+              >
+                Comenzar ahora
+              </a>
+              <a
+                class="button button-dark"
+                href="http://localhost:8080/virtual-library/catalog"
+                target="_self"
+                rel="noreferrer noopener"
+              >
                 Ver catálogo
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -275,7 +292,7 @@
                   class="search-input"
                   placeholder="Busca por título, autor o género..."
                 />
-                <button class="search-button">
+                <button class="button button-primary">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -410,10 +427,12 @@
           </div>
 
           <div class="pricing-grid">
-            <div class="pricing-card">
+            <div class="pricing-card" style="margin: 2rem 0">
               <h3 class="plan-name">Básico</h3>
               <p class="plan-price">Gratis</p>
-              <button class="plan-button">Elegir plan</button>
+              <button class="button button-gray" data-size="full">
+                Elegir plan
+              </button>
               <ul class="plan-features">
                 <li>
                   <svg
@@ -486,11 +505,13 @@
               </ul>
             </div>
 
-            <div class="pricing-card popular">
+            <div class="pricing-card popular" style="margin: 1rem 0">
               <div class="popular-label">Más popular</div>
               <h3 class="plan-name">Premium</h3>
               <p class="plan-price">9.99€/mes</p>
-              <button class="plan-button popular-button">Elegir plan</button>
+              <button class="button button-primary" data-size="full">
+                Elegir plan
+              </button>
               <ul class="plan-features">
                 <li>
                   <svg
@@ -580,10 +601,12 @@
               </ul>
             </div>
 
-            <div class="pricing-card">
+            <div class="pricing-card" style="margin: 2rem 0">
               <h3 class="plan-name">Familiar</h3>
               <p class="plan-price">14.99€/mes</p>
-              <button class="plan-button">Elegir plan</button>
+              <button class="button button-gray" data-size="full">
+                Elegir plan
+              </button>
               <ul class="plan-features">
                 <li>
                   <svg
@@ -687,8 +710,12 @@
             de lectura digital. Tu próxima gran historia te espera.
           </p>
           <div class="cta-buttons">
-            <button class="cta-primary">Registrarse gratis</button>
-            <button class="cta-secondary">Ver planes premium</button>
+            <button class="button button-primary" data-fw="bold">
+              Registrarse gratis
+            </button>
+            <button class="button button-dark" data-fw="bold">
+              Ver planes premium
+            </button>
           </div>
         </div>
       </section>
