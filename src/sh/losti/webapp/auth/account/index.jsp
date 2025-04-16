@@ -5,13 +5,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tu cuenta {}- Virtual Library</title>
-    <link rel="stylesheet" href="../../globals.css" />
-    <link rel="stylesheet" href="./account.css" />
+    <link
+      rel="stylesheet"
+      href="http://localhost:8080/virtual-library/globals.css"
+    />
+    <link
+      rel="stylesheet"
+      href="http://localhost:8080/virtual-library/styles/account.css"
+    />
   </head>
   <body>
     <div>
       <header></header>
       <main class="account-main container">
+        <!-- Profile Presentation and edit buttons -->
         <div class="account-user-data">
           <div class="account-avatar-container">
             <div
@@ -41,9 +48,9 @@
           </div>
           <div class="account-info-container">
             <h1>imlostish</h1>
-            <div>
+            <div class="account-profile-data">
               <!-- Account email and created_at info -->
-              <div>
+              <div class="profile-data-item">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -60,7 +67,7 @@
                 </svg>
                 <span>example@gmail.com</span>
               </div>
-              <div>
+              <div class="profile-data-item">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -81,11 +88,15 @@
               </div>
             </div>
 
-            <div>
+            <div class="account-profile-badges">
               <!-- Accout badges data -->
+              <div class="badge badge-primary">Plan Premium</div>
+              <div class="badge badge-outline">Fantasia</div>
+              <div class="badge badge-outline">Ciencia Ficciòn</div>
+              <div class="badge badge-outline">Misterio</div>
             </div>
 
-            <div>
+            <div class="account-edit-profile">
               <!-- Account private triggers -->
               <button class="button button-primary" data-fw="bold">
                 Editar perfil
@@ -96,6 +107,100 @@
             </div>
           </div>
         </div>
+
+        <!-- PRIVATE! Profile edit options -->
+
+        <section style="display: grid; gap: 1.15rem">
+          <div class="card">
+            <header class="card-header">
+              <h3 class="card-title">Informaciòn Personal</h3>
+              <p class="card-description">
+                Gestiona tu información personal y preferencias
+              </p>
+            </header>
+            <main class="card-content card-content-grid">
+              <div class="card-field">
+                <h4 class="card-field-name">Nombre completo</h4>
+                <div class="card-field-data">
+                  <p class="card-field-content">imlostish</p>
+                  <button class="button button-ghost button-compact">
+                    Editar
+                  </button>
+                </div>
+                <div class="card-field-separator" aria-hidden="true"></div>
+              </div>
+              <div class="card-field">
+                <h4 class="card-field-name">Correo electrónico</h4>
+                <div class="card-field-data">
+                  <p class="card-field-content">example@gmail.com</p>
+                  <button class="button button-ghost button-compact">
+                    Editar
+                  </button>
+                </div>
+                <div class="card-field-separator" aria-hidden="true"></div>
+              </div>
+              <div class="card-field">
+                <h4 class="card-field-name">Contraseña</h4>
+                <div class="card-field-data">
+                  <p class="card-field-content">••••••••••</p>
+                  <button class="button button-ghost button-compact">
+                    Editar
+                  </button>
+                </div>
+                <div class="card-field-separator" aria-hidden="true"></div>
+              </div>
+            </main>
+          </div>
+          <div class="card">
+            <header class="card-header">
+              <h3 class="card-title">Preferencias de Lectura</h3>
+              <p class="card-description">
+                Personaliza tu experiencia de lectura
+              </p>
+            </header>
+            <main class="card-content card-content-grid">
+              <div class="card-field">
+                <h4 class="card-field-name">Géneros favoritos</h4>
+                <div class="card-field-data">
+                  <div class="card-field-list">
+                    <div class="badge badge-outline">Fantasía</div>
+                    <div class="badge badge-outline">Ciencia Ficción</div>
+                    <div class="badge badge-outline">Fantasía Ciencia</div>
+                    <button class="badge badged-dashed">+ Añadir</button>
+                  </div>
+                </div>
+                <div class="card-field-separator" aria-hidden="true"></div>
+              </div>
+              <div class="card-field">
+                <h4 class="card-field-name">Notificaciones</h4>
+                <form
+                  style="display: flex; flex-flow: column nowrap; gap: 0.4rem"
+                  action=""
+                  method="post"
+                >
+                  <div class="card-field-toogle-sx">
+                    <p>Nuevos lanzamientos</p>
+                    <input type="checkbox" />
+                  </div>
+                  <div class="card-field-toogle-sx">
+                    <p>Recomendaciones semanales</p>
+                    <input type="checkbox" />
+                  </div>
+                  <div class="card-field-toogle-sx">
+                    <p>Ofertas y promociones</p>
+                    <input type="checkbox" />
+                  </div>
+                  <button
+                    class="button button-primary"
+                    style="margin: 0.45rem 0 0"
+                  >
+                    Guardar preferencias
+                  </button>
+                </form>
+              </div>
+            </main>
+          </div>
+        </section>
       </main>
     </div>
   </body>

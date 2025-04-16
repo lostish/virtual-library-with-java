@@ -4,13 +4,34 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./globals.css" />
-    <link rel="stylesheet" href="./header.css" />
-    <link rel="stylesheet" href="./hero-section.css" />
-    <link rel="stylesheet" href="./search-section.css" />
-    <link rel="stylesheet" href="./features-section.css" />
-    <link rel="stylesheet" href="./pricing.css" />
-    <link rel="stylesheet" href="./cta.css" />
+    <link
+      rel="stylesheet"
+      href="http://localhost:8080/virtual-library/globals.css"
+    />
+    <link
+      rel="stylesheet"
+      href="http://localhost:8080/virtual-library/styles/header.css"
+    />
+    <link
+      rel="stylesheet"
+      href="http://localhost:8080/virtual-library/styles/hero-section.css"
+    />
+    <link
+      rel="stylesheet"
+      href="http://localhost:8080/virtual-library/styles/search-section.css"
+    />
+    <link
+      rel="stylesheet"
+      href="http://localhost:8080/virtual-library/styles/features-section.css"
+    />
+    <link
+      rel="stylesheet"
+      href="http://localhost:8080/virtual-library/styles/pricing.css"
+    />
+    <link
+      rel="stylesheet"
+      href="http://localhost:8080/virtual-library/styles/cta.css"
+    />
     <title>
       Descubre un mundo de conocimiento en tus manos - Virtual Library
     </title>

@@ -5,8 +5,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ingresa a tu cuenta - Virtual Library</title>
-    <link rel="stylesheet" href="../../globals.css" />
-    <link rel="stylesheet" href="../forms.css" />
+    <link
+      rel="stylesheet"
+      href="http://localhost:8080/virtual-library/globals.css"
+    />
+    <link
+      rel="stylesheet"
+      href="http://localhost:8080/virtual-library/styles/forms.css"
+    />
   </head>
   <body>
     <div class="form-page">
