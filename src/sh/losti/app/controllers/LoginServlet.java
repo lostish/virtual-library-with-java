@@ -1,7 +1,10 @@
 package sh.losti.app.controllers;
 
+import sh.losti.app.models.Session;
+import sh.losti.app.models.SessionData;
 import sh.losti.app.services.AuthServices;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +24,26 @@ public class LoginServlet extends HttpServlet {
             res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             res.getWriter().write("{\"error\": \"Email o contraseña inválidos\"}");
             return;
+        }
+
+        if (auth.login(email, password)) {
+            Session session = auth.getSession();
+            SessionData sessionData = auth.getSessionData();
+
+            Cookie sessionCookie = new Cookie("session", session.toString());
+            sessionCookie.setMaxAge(3 * 24 * 60 * 60);
+            sessionCookie.setPath("/");
+
+            Cookie sessionDataCookie = new Cookie("session-data", sessionData.toString());
+            sessionDataCookie.setMaxAge(3 * 24 * 60 * 60);
+            sessionCookie.setPath("/");
+
+            res.addCookie(sessionCookie);
+            res.addCookie(sessionDataCookie);
+            res.sendRedirect("/auth/account");
+        } else {
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            res.getWriter().write("{\"error\": \"Credenciales inválidas\"}");
         }
 
     }

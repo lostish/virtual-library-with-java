@@ -1,6 +1,7 @@
 package sh.losti.app.interfaces.services;
 
 import sh.losti.app.models.Session;
+import sh.losti.app.models.SessionData;
 
 public interface IAuthServices {
     boolean isValidSession(Session session);
@@ -8,6 +9,7 @@ public interface IAuthServices {
     boolean isValidPassword(String password);
     Session getSession();
     boolean setSession(Session session);
+    SessionData getSessionData();
     String hashPassword(String password);
     boolean checkPassword(String password, String hashedPassword);
     boolean login(String email, String password);
