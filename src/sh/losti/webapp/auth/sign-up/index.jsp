@@ -6,6 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Crea tu cuenta - Virtual Library</title>
     <link
+      rel="preload"
+      href="http://localhost:8080/virtual-library/globals.css"
+      as="style"
+    />
+    <link
+      rel="preload"
+      href="http://localhost:8080/virtual-library/styles/forms.css"
+      as="style"
+    />
+    <link
       rel="stylesheet"
       href="http://localhost:8080/virtual-library/globals.css"
     />

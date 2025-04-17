@@ -1,18 +1,18 @@
 package sh.losti.app.builders;
 
+import java.util.Date;
 import sh.losti.app.interfaces.builders.IProfileBuilder;
 import sh.losti.app.models.Profile;
 
-import java.util.Date;
-
 public class ProfileBuilder implements IProfileBuilder {
     private int id;
-    private String userId;
+    private int userId;
     private String biography;
     private String networks;
     private String books;
     private Date createdAt;
     private Date updatedAt;
+
     @Override
     public IProfileBuilder setId(int id) {
         this.id = id;
@@ -20,7 +20,7 @@ public class ProfileBuilder implements IProfileBuilder {
     }
 
     @Override
-    public IProfileBuilder setUserId(String userId) {
+    public IProfileBuilder setUserId(int userId) {
         this.userId = userId;
         return this;
     }

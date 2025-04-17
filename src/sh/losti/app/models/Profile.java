@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Profile {
     private int id;
-    private String userId;
+    private int userId;
     private String biography;
     private String networks;
     private String books;
@@ -13,13 +13,12 @@ public class Profile {
 
     public Profile(
             int id,
-            String userId,
+            int userId,
             String biography,
             String networks,
             String books,
             Date createdAt,
-            Date updatedAt
-    ) {
+            Date updatedAt) {
         this.id = id;
         this.userId = userId;
         this.biography = biography;

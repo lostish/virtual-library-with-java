@@ -5,6 +5,41 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
+      rel="preload"
+      href="http://localhost:8080/virtual-library/globals.css"
+      as="style"
+    />
+    <link
+      rel="preload"
+      href="http://localhost:8080/virtual-library/styles/header.css"
+      as="style"
+    />
+    <link
+      rel="preload"
+      href="http://localhost:8080/virtual-library/styles/hero-section.css"
+      as="style"
+    />
+    <link
+      rel="preload"
+      href="http://localhost:8080/virtual-library/styles/search-section.css"
+      as="style"
+    />
+    <link
+      rel="preload"
+      href="http://localhost:8080/virtual-library/styles/features-section.css"
+      as="style"
+    />
+    <link
+      rel="preload"
+      href="http://localhost:8080/virtual-library/styles/pricing.css"
+      as="style"
+    />
+    <link
+      rel="preload"
+      href="http://localhost:8080/virtual-library/styles/cta.css"
+      as="style"
+    />
+    <link
       rel="stylesheet"
       href="http://localhost:8080/virtual-library/globals.css"
     />
@@ -448,7 +483,7 @@
           </div>
 
           <div class="pricing-grid">
-            <div class="pricing-card" style="margin: 2rem 0">
+            <div class="pricing-card">
               <h3 class="plan-name">Básico</h3>
               <p class="plan-price">Gratis</p>
               <button class="button button-gray" data-size="full">
@@ -466,7 +501,6 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="lucide lucide-chevron-right-icon lucide-chevron-right"
                   >
                     <path d="m9 18 6-6-6-6" />
                   </svg>
@@ -483,7 +517,6 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="lucide lucide-chevron-right-icon lucide-chevron-right"
                   >
                     <path d="m9 18 6-6-6-6" />
                   </svg>
@@ -500,7 +533,6 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="lucide lucide-chevron-right-icon lucide-chevron-right"
                   >
                     <path d="m9 18 6-6-6-6" />
                   </svg>
@@ -517,7 +549,6 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="lucide lucide-chevron-right-icon lucide-chevron-right"
                   >
                     <path d="m9 18 6-6-6-6" />
                   </svg>
@@ -526,7 +557,7 @@
               </ul>
             </div>
 
-            <div class="pricing-card popular" style="margin: 1rem 0">
+            <div class="pricing-card popular">
               <div class="popular-label">Más popular</div>
               <h3 class="plan-name">Premium</h3>
               <p class="plan-price">9.99€/mes</p>
@@ -545,7 +576,6 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="lucide lucide-chevron-right-icon lucide-chevron-right"
                   >
                     <path d="m9 18 6-6-6-6" />
                   </svg>
@@ -562,7 +592,6 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="lucide lucide-chevron-right-icon lucide-chevron-right"
                   >
                     <path d="m9 18 6-6-6-6" />
                   </svg>
@@ -579,7 +608,6 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="lucide lucide-chevron-right-icon lucide-chevron-right"
                   >
                     <path d="m9 18 6-6-6-6" />
                   </svg>
@@ -596,7 +624,6 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="lucide lucide-chevron-right-icon lucide-chevron-right"
                   >
                     <path d="m9 18 6-6-6-6" />
                   </svg>
@@ -613,7 +640,6 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="lucide lucide-chevron-right-icon lucide-chevron-right"
                   >
                     <path d="m9 18 6-6-6-6" />
                   </svg>
@@ -622,7 +648,7 @@
               </ul>
             </div>
 
-            <div class="pricing-card" style="margin: 2rem 0">
+            <div class="pricing-card">
               <h3 class="plan-name">Familiar</h3>
               <p class="plan-price">14.99€/mes</p>
               <button class="button button-gray" data-size="full">
@@ -640,7 +666,6 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="lucide lucide-chevron-right-icon lucide-chevron-right"
                   >
                     <path d="m9 18 6-6-6-6" />
                   </svg>
@@ -657,7 +682,6 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="lucide lucide-chevron-right-icon lucide-chevron-right"
                   >
                     <path d="m9 18 6-6-6-6" />
                   </svg>
@@ -674,7 +698,6 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="lucide lucide-chevron-right-icon lucide-chevron-right"
                   >
                     <path d="m9 18 6-6-6-6" />
                   </svg>
@@ -691,7 +714,6 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="lucide lucide-chevron-right-icon lucide-chevron-right"
                   >
                     <path d="m9 18 6-6-6-6" />
                   </svg>
@@ -708,7 +730,6 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="lucide lucide-chevron-right-icon lucide-chevron-right"
                   >
                     <path d="m9 18 6-6-6-6" />
                   </svg>

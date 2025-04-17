@@ -1,5 +1,6 @@
 package sh.losti.app.filters;
 
+import sh.losti.app.constants.AuthConstants;
 import sh.losti.app.enums.EVerifySessionData;
 import sh.losti.app.models.Session;
 import sh.losti.app.models.SessionData;
@@ -21,7 +22,6 @@ import java.io.IOException;
 @WebFilter("/*")
 public class AuthFilter implements Filter {
     private AuthServices auth = null;
-    private static final String[] authCookies = new String[]{"session", "session-data"};
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -54,10 +54,10 @@ public class AuthFilter implements Filter {
 
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (authCookies[0].equals(cookie.getName())) {
+                if (AuthConstants.authCookies[0].equals(cookie.getName())) {
                     session = Session.fromJson(cookie.getValue());
                 }
-                if (authCookies[1].equals(cookie.getName())) {
+                if (AuthConstants.authCookies[1].equals(cookie.getName())) {
                     sessionData = SessionData.fromJSON(cookie.getValue());
                 }
             }

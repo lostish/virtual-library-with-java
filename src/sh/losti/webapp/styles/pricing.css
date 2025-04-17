@@ -24,6 +24,16 @@
   gap: 20px;
 }
 
+@media (min-width: 980px) {
+  .pricing-grid .pricing-card:nth-child(odd) {
+    margin: 2rem 0;
+  }
+
+  .pricing-grid .pricing-card:nth-child(2) {
+    margin: 1rem 0;
+  }
+}
+
 .pricing-card {
   position: relative;
   background-color: hsl(240, 5%, 10%);
