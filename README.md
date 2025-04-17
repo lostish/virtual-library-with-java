@@ -2,6 +2,13 @@
 
 A project to explore and learn more about the Java ecosystem and how to create web applications with it.
 
+**Dependencies**
+
+- javax-servlet-api
+- jbcrypt
+- json-20250107
+- mysql-connector-j
+
 > PR's Open!
 
 - [**English Ver**](./README.md#getting-started-en)

@@ -1,5 +1,7 @@
 package sh.losti.app.models;
 
+import org.json.JSONObject;
+
 import java.util.Date;
 
 public class Session {
@@ -18,5 +20,35 @@ public class Session {
         this.user_id = user_id;
         this.session_key = session_key;
         this.expires_at = expires_at;
+    }
+
+    public String getSession_key() {
+        return session_key;
+    }
+
+    @Override
+    public String toString() {
+        JSONObject json = new JSONObject();
+        json.put("session_id", session_id);
+        json.put("user_id", user_id);
+        json.put("session_key", session_key);
+        json.put("expires_at", expires_at != null ? expires_at.getTime() : null);
+        return json.toString();
+    }
+
+    public static Session fromJson(String jsonString) {
+        try {
+            JSONObject json = new JSONObject(jsonString);
+            return new Session(
+                    json.getInt("session_id"),
+                    json.getInt("user_id"),
+                    json.getString("session_key"),
+                    json.has("expires_at") && !json.isNull("expires_at")
+                            ? new Date(json.getLong("expires_at"))
+                            : null
+            );
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

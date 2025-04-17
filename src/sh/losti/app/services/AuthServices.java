@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -21,6 +22,15 @@ public class AuthServices implements IAuthServices {
     private static final Pattern EMAIL_REGEX = Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", Pattern.CASE_INSENSITIVE);
     private static final Pattern PASSWORD_REGEX = Pattern.compile("\"\\\\A(?=\\\\S*?[0-9])(?=\\\\S*?[a-z])(?=\\\\S*?[A-Z])(?=\\\\S*?[@#$%^&+=])\\\\S{8,}\\\\z\"");
 
+    private static final String VERIFY_SESSION = """
+                SELECT s.session_id, s.user_id, s.session_key, s.expires_at,
+                           u.name, u.nameId, u.email
+                    FROM sessions s
+                    JOIN users u ON s.user_id = u.id
+                    WHERE s.session_key = ?
+                    LIMIT 1
+            """;
+    private static final String DELETE_SESSION = "DELETE FROM sessions WHERE session_key=?";
     private static final String CREATE_SESSION = "INSERT INTO sessions (user_id, session_key, expires_at) VALUES (?, ?, ?)";
     private static final String GET_CURRENT_SESSION = "SELECT session_id, user_id, session_key, expires_at FROM sessions WHERE session_key=? LIMIT 1";
     private static final String LOGIN_GET_DATA = "SELECT id, name, nameId, email FROM users WHERE email = ? LIMIT 1";
@@ -49,7 +59,42 @@ public class AuthServices implements IAuthServices {
 
     @Override
     public boolean isValidSession(Session session) {
-        return false;
+        try (PreparedStatement ps = Client.getPreparedStatement(VERIFY_SESSION)) {
+            ps.setString(1, session.getSession_key());
+            ResultSet rs = ps.executeQuery();
+
+            if (!rs.next()) return false;
+
+            Timestamp expires_at = rs.getTimestamp("expires_at");
+            Date now = new Date();
+
+            if (expires_at.before(now)) {
+                try (PreparedStatement delete = Client.getPreparedStatement(DELETE_SESSION)) {
+                    delete.setString(1, session.getSession_key());
+                    delete.executeUpdate();
+                }
+                return false;
+            }
+
+            this.session = new Session(
+                    rs.getInt("session_id"),
+                    rs.getInt("user_id"),
+                    rs.getString("session_key"),
+                    new Date(expires_at.getTime())
+            );
+
+            this.session_data = new SessionData(
+                    rs.getInt("user_id"),
+                    rs.getString("name"),
+                    rs.getString("nameId"),
+                    rs.getString("email")
+            );
+
+            return true;
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "% Error checking session", e);
+            return false;
+        }
     }
 
     @Override
