@@ -3,9 +3,11 @@ package sh.losti.app.services;
 import org.mindrot.jbcrypt.BCrypt;
 
 import sh.losti.app.db.Client;
+import sh.losti.app.enums.EVerifySessionData;
 import sh.losti.app.interfaces.services.IAuthServices;
 import sh.losti.app.models.Session;
 import sh.losti.app.models.SessionData;
+import sh.losti.app.utils.VerifySessionResult;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,6 +35,7 @@ public class AuthServices implements IAuthServices {
     private static final String DELETE_SESSION = "DELETE FROM sessions WHERE session_key=?";
     private static final String CREATE_SESSION = "INSERT INTO sessions (user_id, session_key, expires_at) VALUES (?, ?, ?)";
     private static final String GET_CURRENT_SESSION = "SELECT session_id, user_id, session_key, expires_at FROM sessions WHERE session_key=? LIMIT 1";
+    private static final String GET_SESSION_DATA = "SELECT id, name, nameId, email FROM users WHERE id = ? AND email = ? LIMIT 1";
     private static final String LOGIN_GET_DATA = "SELECT id, name, nameId, email FROM users WHERE email = ? LIMIT 1";
     private static final String LOGIN_GET_HASHED_PWD = "SELECT password FROM users WHERE email = ? LIMIT 1";
     private static final String SIGN_UP_QUERY = "INSERT INTO users (name, nameId, email, password) VALUES (?, ?, ?, ?)";
@@ -96,6 +99,41 @@ public class AuthServices implements IAuthServices {
             return false;
         }
     }
+
+    @Override
+    public VerifySessionResult verifySessionData(SessionData currentSessionData) {
+        if (currentSessionData == null || currentSessionData.getEmail() == null) {
+            return new VerifySessionResult(EVerifySessionData.NOT_VERIFIED, null);
+        }
+
+        try (PreparedStatement ps = Client.getPreparedStatement(GET_SESSION_DATA)) {
+            ps.setInt(1, currentSessionData.getId());
+            ps.setString(2, currentSessionData.getEmail());
+            ResultSet rs = ps.executeQuery();
+
+            if (!rs.next()) return new VerifySessionResult(EVerifySessionData.NOT_VERIFIED, null);
+
+            SessionData fresh = new SessionData(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("nameId"),
+                    rs.getString("email")
+            );
+
+            boolean changed = !currentSessionData.getName().equals(fresh.getName())
+                    || !currentSessionData.getNameId().equals(fresh.getNameId())
+                    || !currentSessionData.getEmail().equals(fresh.getEmail());
+
+            EVerifySessionData status = changed
+                    ? EVerifySessionData.UPDATED
+                    : EVerifySessionData.VERIFIED;
+
+            return new VerifySessionResult(status, fresh);
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "% AUTH SERVICES - VerifySessionData error:", e);
+            return new VerifySessionResult(EVerifySessionData.ERROR, null);
+        }
+    };
 
     @Override
     public boolean isValidEmail(String email) {
@@ -237,6 +275,11 @@ public class AuthServices implements IAuthServices {
 
     @Override
     public void logout() {
-
+        try (PreparedStatement ps = Client.getPreparedStatement(DELETE_SESSION)) {
+            ps.setString(1, session.getSession_key());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "% AUTH SERVICES ERROR: %s", e);
+        }
     }
 }

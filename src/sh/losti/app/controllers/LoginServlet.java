@@ -4,12 +4,14 @@ import sh.losti.app.models.Session;
 import sh.losti.app.models.SessionData;
 import sh.losti.app.services.AuthServices;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@WebServlet("/auth/sign-in")
 public class LoginServlet extends HttpServlet {
     private final AuthServices auth = AuthServices.getInstance();
 
