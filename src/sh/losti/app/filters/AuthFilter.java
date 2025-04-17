@@ -1,14 +1,9 @@
 package sh.losti.app.filters;
 
-import sh.losti.app.interfaces.services.IAuthServices;
 import sh.losti.app.models.Session;
 import sh.losti.app.services.AuthServices;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +12,19 @@ import java.io.IOException;
 
 @WebFilter("/*")
 public class AuthFilter implements Filter {
-    private final IAuthServices auth = AuthServices.getInstance();
+    private AuthServices auth = null;
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        auth = AuthServices.getInstance();
+        System.out.println("[AuthFilter] Inicializado");
+    }
+
+    @Override
+    public void destroy() {
+        System.out.println("[AuthFilter] Destruido");
+        auth = null;
+    }
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
