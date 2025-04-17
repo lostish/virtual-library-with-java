@@ -95,6 +95,20 @@ public class SQLiteTablesConfig implements ITablesConfig {
     }
 
     @Override
+    public String getSessionsTable() {
+        return """
+               CREATE TABLE IF NOT EXISTS sessions (
+                session_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                user_id INTEGER NOT NULL,
+                session_key TEXT NOT NULL,
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                expires_at TEXT NOT NULL,
+                FOREIGN KEY (user_id) REFERENCES users(id)
+               );
+               """;
+    }
+
+    @Override
     public String getProfilesTable() {
         return """
                CREATE TABLE IF NOT EXISTS profiles (

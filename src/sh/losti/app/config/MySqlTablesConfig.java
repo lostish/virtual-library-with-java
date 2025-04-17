@@ -94,6 +94,20 @@ public class MySqlTablesConfig implements ITablesConfig {
     }
 
     @Override
+    public String getSessionsTable() {
+        return """
+                CREATE TABLE IF NOT EXISTS sessions (
+                    session_id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+                    user_id INT NOT NULL,
+                    session_key VARCHAR(255) NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    expires_at TIMESTAMP NOT NULL,
+                    FOREIGN KEY (user_id) REFERENCES users(id)
+                )
+               """;
+    }
+
+    @Override
     public String getProfilesTable() {
         return """
                 CREATE TABLE IF NOT EXISTS profiles (

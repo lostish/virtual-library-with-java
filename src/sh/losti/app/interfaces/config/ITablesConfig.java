@@ -7,6 +7,7 @@ public interface ITablesConfig {
     String getAuthorsGenreTable();
     String getBooksTable();
     String getUsersTable();
+    String getSessionsTable();
     String getProfilesTable();
     String getBookInteractionTable();
 }
