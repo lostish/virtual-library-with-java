@@ -77,12 +77,12 @@ public class AuthFilter implements Filter {
 
         if (!isLoggedIn && isAccount) {
             // Si no está logueado y quiere entrar a /auth/account, lo redirigimos
-            response.sendRedirect("/auth/sign-in");
+            response.sendRedirect(request.getContextPath() + "/auth/sign-in");
             return;
         }
 
         if (isLoggedIn && (isSignIn || isSignUp)) {
-            response.sendRedirect("/auth/account");
+            response.sendRedirect(request.getContextPath() + "/account");
             return;
         }
 

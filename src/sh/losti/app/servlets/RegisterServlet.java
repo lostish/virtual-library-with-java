@@ -1,4 +1,4 @@
-package sh.losti.app.controllers;
+package sh.losti.app.servlets;
 
 import sh.losti.app.services.AuthServices;
 
