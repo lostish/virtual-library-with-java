@@ -21,8 +21,11 @@ import java.util.regex.Pattern;
 public class AuthServices implements IAuthServices {
     private static final Logger logger = Logger.getLogger(AuthServices.class.getName());
     private static AuthServices instance;
-    private static final Pattern EMAIL_REGEX = Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", Pattern.CASE_INSENSITIVE);
-    private static final Pattern PASSWORD_REGEX = Pattern.compile("\"\\\\A(?=\\\\S*?[0-9])(?=\\\\S*?[a-z])(?=\\\\S*?[A-Z])(?=\\\\S*?[@#$%^&+=])\\\\S{8,}\\\\z\"");
+    private static final Pattern EMAIL_REGEX = Pattern.compile(
+            "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+            Pattern.CASE_INSENSITIVE);
+    private static final Pattern PASSWORD_REGEX = Pattern
+            .compile("\"\\\\A(?=\\\\S*?[0-9])(?=\\\\S*?[a-z])(?=\\\\S*?[A-Z])(?=\\\\S*?[@#$%^&+=])\\\\S{8,}\\\\z\"");
 
     private static final String VERIFY_SESSION = """
                 SELECT s.session_id, s.user_id, s.session_key, s.expires_at,
@@ -43,7 +46,8 @@ public class AuthServices implements IAuthServices {
     private Session session = null;
     private SessionData session_data = null;
 
-    private AuthServices() {}
+    private AuthServices() {
+    }
 
     public static synchronized AuthServices getInstance() {
         if (instance == null) {
@@ -66,7 +70,8 @@ public class AuthServices implements IAuthServices {
             ps.setString(1, session.getSession_key());
             ResultSet rs = ps.executeQuery();
 
-            if (!rs.next()) return false;
+            if (!rs.next())
+                return false;
 
             Timestamp expires_at = rs.getTimestamp("expires_at");
             Date now = new Date();
@@ -83,15 +88,13 @@ public class AuthServices implements IAuthServices {
                     rs.getInt("session_id"),
                     rs.getInt("user_id"),
                     rs.getString("session_key"),
-                    new Date(expires_at.getTime())
-            );
+                    new Date(expires_at.getTime()));
 
             this.session_data = new SessionData(
                     rs.getInt("user_id"),
                     rs.getString("name"),
                     rs.getString("nameId"),
-                    rs.getString("email")
-            );
+                    rs.getString("email"));
 
             return true;
         } catch (SQLException e) {
@@ -111,14 +114,14 @@ public class AuthServices implements IAuthServices {
             ps.setString(2, currentSessionData.getEmail());
             ResultSet rs = ps.executeQuery();
 
-            if (!rs.next()) return new VerifySessionResult(EVerifySessionData.NOT_VERIFIED, null);
+            if (!rs.next())
+                return new VerifySessionResult(EVerifySessionData.NOT_VERIFIED, null);
 
             SessionData fresh = new SessionData(
                     rs.getInt("id"),
                     rs.getString("name"),
                     rs.getString("nameId"),
-                    rs.getString("email")
-            );
+                    rs.getString("email"));
 
             boolean changed = !currentSessionData.getName().equals(fresh.getName())
                     || !currentSessionData.getNameId().equals(fresh.getNameId())
@@ -202,11 +205,10 @@ public class AuthServices implements IAuthServices {
             }
 
             session_data = new SessionData(
-                        rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4)
-                    );
+                    rs.getInt(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getString(4));
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "% AUTH SERVICES ERROR: %s", e);
             return false;
@@ -239,8 +241,7 @@ public class AuthServices implements IAuthServices {
                     rs.getInt(1),
                     rs.getInt(2),
                     rs.getString(3),
-                    rs.getTimestamp(4)
-                );
+                    rs.getTimestamp(4));
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "% AUTH SERVICES ERROR: %s", e);
             return false;
@@ -268,7 +269,8 @@ public class AuthServices implements IAuthServices {
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "% AUTH SERVICES ERROR: %s", e);
             return false;
-        };
+        }
+        ;
 
         return true;
     }
