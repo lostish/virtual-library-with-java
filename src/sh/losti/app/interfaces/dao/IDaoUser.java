@@ -1,5 +1,8 @@
 package sh.losti.app.interfaces.dao;
 
-public interface IDaoUser {
+import sh.losti.app.models.Profile;
 
+
+public interface IDaoUser {
+    Profile getProfile(int id);
 }
