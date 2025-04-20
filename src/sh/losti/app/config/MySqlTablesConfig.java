@@ -143,11 +143,13 @@ public class MySqlTablesConfig implements ITablesConfig {
         return """
                 CREATE IF NOT EXISTS logs (
                     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+                    level ENUM('FINE', 'SEVERE', 'CONFIG', 'ALL', 'INFO', 'WARNING', 'ERROR', 'DATABASE') NOT NULL,
                     by CHAR(255) NOT NULL,
-                    where CHAR(255) NOT NULL,
-                    handler CHAR(255) NOT NULL,
+                    action CHAR(255) NOT NULL,
+                    message VARCHAR NOT NULL,
                     data VARCHAR,
                     errors VARCHAR,
+                    location VARCHAR,
                     duration INTEGER NOT NULL DEFAULT 0,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 )
