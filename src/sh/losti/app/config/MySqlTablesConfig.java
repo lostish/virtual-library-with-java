@@ -137,4 +137,20 @@ public class MySqlTablesConfig implements ITablesConfig {
                 );
                """;
     }
+
+    @Override
+    public String getLogsTable() {
+        return """
+                CREATE IF NOT EXISTS logs (
+                    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+                    by CHAR(255) NOT NULL,
+                    where CHAR(255) NOT NULL,
+                    handler CHAR(255) NOT NULL,
+                    data VARCHAR,
+                    errors VARCHAR,
+                    duration INTEGER NOT NULL DEFAULT 0,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                )
+                """;
+    }
 }

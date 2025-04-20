@@ -22,6 +22,10 @@ import java.io.IOException;
 @WebFilter("/*")
 public class AuthFilter implements Filter {
     private AuthServices auth = null;
+    private static final String accountPath = "/account";
+    private static final String sortSettingsPath = "/settings";
+    private static final String signInPath = "/auth/sign-in";
+    private static final String signUpPath = "/auth/sign-up";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -36,21 +40,29 @@ public class AuthFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException
     {
-        HttpServletRequest request = (HttpServletRequest) req;
-        HttpServletResponse response = (HttpServletResponse) res;
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
 
-        String path = request.getRequestURI();
+        String ctx = req.getContextPath();
+        String servletPath = req.getServletPath();
+        String pathInfo = req.getPathInfo();
+
         Session session = null;
         SessionData sessionData = null;
-        // boolean isAuthRoute = path.startsWith("/auth/");
-        boolean isSignIn = path.equals("/auth/sign-in");
-        boolean isSignUp = path.equals("/auth/sign-up");
-        boolean isAccount = path.equals("/auth/account");
 
-        Cookie[] cookies = request.getCookies();
+        // Construir la ruta completa
+        String fullPath = (servletPath + (pathInfo != null ? pathInfo : "")).toLowerCase();
+
+        // Si es una ruta pública bajo /account/of/, permitir el acceso
+        if (fullPath.matches("/account/of/[a-z0-9_-]+")) {
+            chain.doFilter(req, res);
+            return;
+        }
+
+        Cookie[] cookies = req.getCookies();
 
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -66,23 +78,28 @@ public class AuthFilter implements Filter {
         boolean isLoggedIn = session != null && auth.isValidSession(session);
         VerifySessionResult vsr = auth.verifySessionData(sessionData);
 
+        boolean wantsAccountBase    = accountPath.equals(servletPath)   && (pathInfo == null || "/".equals(pathInfo));
+        boolean wantsAccountSetting = accountPath.equals(servletPath)   && sortSettingsPath.equals(pathInfo);
+
+        boolean wantsSignIn = signInPath.equals(servletPath);
+        boolean wantsSignUp = signUpPath.equals(servletPath);
+
         if (isLoggedIn && vsr.getStatus() == EVerifySessionData.UPDATED) {
             SessionData fresh = vsr.getSessionData();
             Cookie sdCookie = new Cookie("session-data", fresh.toString());
             sdCookie.setPath("/");
             sdCookie.setHttpOnly(true);
             sdCookie.setMaxAge(3 * 24 * 60 * 60); // 3 días
-            response.addCookie(sdCookie);
+            res.addCookie(sdCookie);
         }
 
-        if (!isLoggedIn && isAccount) {
-            // Si no está logueado y quiere entrar a /auth/account, lo redirigimos
-            response.sendRedirect(request.getContextPath() + "/auth/sign-in");
+        if (!isLoggedIn && (wantsAccountBase || wantsAccountSetting)) {
+            res.sendRedirect(ctx + signInPath);
             return;
         }
 
-        if (isLoggedIn && (isSignIn || isSignUp)) {
-            response.sendRedirect(request.getContextPath() + "/account");
+        if (isLoggedIn && (wantsSignIn || wantsSignUp)) {
+            res.sendRedirect(ctx + accountPath);
             return;
         }
 

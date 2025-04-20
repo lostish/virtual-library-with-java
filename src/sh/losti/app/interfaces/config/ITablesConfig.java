@@ -10,4 +10,5 @@ public interface ITablesConfig {
     String getSessionsTable();
     String getProfilesTable();
     String getBookInteractionTable();
+    String getLogsTable();
 }

@@ -4,6 +4,7 @@ import sh.losti.app.models.Session;
 import sh.losti.app.models.SessionData;
 import sh.losti.app.services.AuthServices;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +15,13 @@ import java.io.IOException;
 @WebServlet("/auth/sign-in")
 public class LoginServlet extends HttpServlet {
     private final AuthServices auth = AuthServices.getInstance();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+        res.setContentType("text/html");
+        res.setStatus(HttpServletResponse.SC_OK);
+        req.getRequestDispatcher("/WEB-INF/views/auth/sign-in.jsp").forward(req, res);
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
@@ -38,11 +46,11 @@ public class LoginServlet extends HttpServlet {
 
             Cookie sessionDataCookie = new Cookie("session-data", sessionData.toString());
             sessionDataCookie.setMaxAge(3 * 24 * 60 * 60);
-            sessionCookie.setPath("/");
+            sessionDataCookie.setPath("/");
 
             res.addCookie(sessionCookie);
             res.addCookie(sessionDataCookie);
-            res.sendRedirect("/auth/account");
+            res.sendRedirect(req.getContextPath() + "/account");
         } else {
             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             res.getWriter().write("{\"error\": \"Credenciales inválidas\"}");

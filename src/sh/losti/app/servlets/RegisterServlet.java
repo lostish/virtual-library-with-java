@@ -2,6 +2,7 @@ package sh.losti.app.servlets;
 
 import sh.losti.app.services.AuthServices;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,13 @@ import java.io.IOException;
 @WebServlet("/auth/sign-up")
 public class RegisterServlet extends HttpServlet {
     private final AuthServices auth = AuthServices.getInstance();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+        res.setContentType("text/html");
+        res.setStatus(HttpServletResponse.SC_OK);
+        req.getRequestDispatcher("/WEB-INF/views/auth/sign-up.jsp").forward(req, res);
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {

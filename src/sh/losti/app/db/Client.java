@@ -30,12 +30,14 @@ public class Client {
         try (Statement stm = getStatement()) {
             ITablesConfig config = TablesConfig.sqlite();
 
+            stm.addBatch(config.getLogsTable());
             stm.addBatch(config.getUsersTable());
             stm.addBatch(config.getProfilesTable());
             stm.addBatch(config.getBookInteractionTable());
             stm.addBatch(config.getEditorialsTable());
             stm.addBatch(config.getEditorialsGenreTable());
             stm.addBatch(config.getAuthorsTable());
+            stm.addBatch(config.getSessionsTable());
             stm.addBatch(config.getAuthorsGenreTable());
             stm.addBatch(config.getBooksTable());
 
