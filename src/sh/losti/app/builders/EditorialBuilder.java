@@ -1,11 +1,11 @@
 package sh.losti.app.builders;
 
-import sh.losti.app.interfaces.builders.IEditorialsBuilder;
-import sh.losti.app.models.Editorials;
+import sh.losti.app.interfaces.builders.IEditorialBuilder;
+import sh.losti.app.models.Editorial;
 
 import java.util.Date;
 
-public class EditorialsBuilder implements IEditorialsBuilder {
+public class EditorialBuilder implements IEditorialBuilder {
     private int id;
     private String name;
     private String nameId;
@@ -17,61 +17,61 @@ public class EditorialsBuilder implements IEditorialsBuilder {
     private Date createdAt;
 
     @Override
-    public IEditorialsBuilder setId(int id) {
+    public IEditorialBuilder setId(int id) {
         this.id = id;
         return this;
     }
 
     @Override
-    public IEditorialsBuilder setName(String name) {
+    public IEditorialBuilder setName(String name) {
         this.name = name;
         return this;
     }
 
     @Override
-    public IEditorialsBuilder setNameId(String nameId) {
+    public IEditorialBuilder setNameId(String nameId) {
         this.nameId = nameId;
         return this;
     }
 
     @Override
-    public IEditorialsBuilder setDescription(String description) {
+    public IEditorialBuilder setDescription(String description) {
         this.description = description;
         return this;
     }
 
     @Override
-    public IEditorialsBuilder setAvatar(String avatar) {
+    public IEditorialBuilder setAvatar(String avatar) {
         this.avatar = avatar;
         return this;
     }
 
     @Override
-    public IEditorialsBuilder setAuthorsIdList(String[] authorsIdList) {
+    public IEditorialBuilder setAuthorsIdList(String[] authorsIdList) {
         this.authorsIdList = authorsIdList;
         return this;
     }
 
     @Override
-    public IEditorialsBuilder setGenresIdList(String[] genresIdList) {
+    public IEditorialBuilder setGenresIdList(String[] genresIdList) {
         this.genresIdList = genresIdList;
         return this;
     }
 
     @Override
-    public IEditorialsBuilder setUpdatedAt(Date updatedAt) {
+    public IEditorialBuilder setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
         return this;
     }
 
     @Override
-    public IEditorialsBuilder setCreatedAt(Date createdAt) {
+    public IEditorialBuilder setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
         return this;
     }
 
     @Override
-    public Editorials build() {
-        return new Editorials(id, name, nameId, description, avatar, authorsIdList, genresIdList, updatedAt, createdAt);
+    public Editorial build() {
+        return new Editorial(id, name, nameId, description, avatar, authorsIdList, genresIdList, updatedAt, createdAt);
     }
 }

@@ -2,7 +2,7 @@ package sh.losti.app.models;
 
 import java.util.Date;
 
-public class Editorials {
+public class Editorial {
     private int id;
     private String name;
     private String nameId;
@@ -13,7 +13,7 @@ public class Editorials {
     private Date updatedAt;
     private Date createdAt;
 
-    public Editorials(
+    public Editorial(
             int id,
             String name,
             String nameId,

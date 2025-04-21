@@ -2,11 +2,14 @@ package sh.losti.app.services;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import sh.losti.app.builders.LogBuilder;
 import sh.losti.app.dao.AuthDaoImpl;
+import sh.losti.app.enums.ELogLevel;
 import sh.losti.app.enums.EVerifySessionData;
 import sh.losti.app.interfaces.services.IAuthServices;
 import sh.losti.app.models.Session;
 import sh.losti.app.models.SessionData;
+import sh.losti.app.utils.LogTimer;
 import sh.losti.app.utils.VerifySessionResult;
 
 import java.sql.ResultSet;
@@ -50,6 +53,7 @@ public class AuthServices implements IAuthServices {
 
     @Override
     public boolean isValidSession(Session session) {
+        LogTimer timer = LogTimer.start();
         try (ResultSet rs = dao.verifySession(session)) {
             Timestamp expires_at = rs.getTimestamp("expires_at");
 
@@ -66,7 +70,19 @@ public class AuthServices implements IAuthServices {
 
             return true;
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "% Error checking session", e);
+            long duration = timer.millis();
+            String logFormat = new LogBuilder()
+                    .setLevel(ELogLevel.DATABASE)
+                    .setBy(getClass().getName())
+                    .setAction("AuthServices.isValidSession")
+                    .setMessage("Verify session expired or invalid data")
+                    .setData(session.toString())
+                    .setErrors(null)
+                    .setLocation(e)
+                    .setLocalTimestamp(System.currentTimeMillis())
+                    .setDuration(duration)
+                    .formatLog();
+            logger.config(logFormat);
             return false;
         }
     }

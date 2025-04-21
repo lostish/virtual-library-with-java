@@ -1,87 +1,104 @@
 package sh.losti.app.builders;
 
-import sh.losti.app.interfaces.builders.IBooksBuilder;
-import sh.losti.app.models.Books;
+import sh.losti.app.enums.EBookDownloadType;
+import sh.losti.app.enums.EBookPostType;
+import sh.losti.app.enums.EBookState;
+import sh.losti.app.interfaces.builders.IBookBuilder;
+import sh.losti.app.models.Book;
 
 import java.util.Date;
 
-public class BookBuilder implements IBooksBuilder {
+public class BookBuilder implements IBookBuilder {
     private int id;
+    private int authorId;
     private String name;
     private String nameId;
     private String description;
-    private String biography;
     private boolean published;
-    private String editorials;
-    private int views;
-    private int saves;
-    private int downloads;
+    private EBookState state;
+    private EBookPostType postType;
+    private EBookDownloadType downloadType;
     private Date createdAt;
     private Date updatedAt;
 
     @Override
-    public IBooksBuilder setId(int id) {
+    public IBookBuilder setId(int id) {
         this.id = id;
         return this;
     }
+
     @Override
-    public IBooksBuilder setName(String name) {
+    public IBookBuilder setAuthorId(int authorId) {
+        this.authorId = authorId;
+        return this;
+    }
+
+    @Override
+    public IBookBuilder setName(String name) {
         this.name = name;
         return this;
     }
     @Override
-    public IBooksBuilder setNameId(String nameId) {
+    public IBookBuilder setNameId(String nameId) {
         this.nameId = nameId;
         return this;
     }
     @Override
-    public IBooksBuilder setDescription(String description) {
+    public IBookBuilder setDescription(String description) {
         this.description = description;
         return this;
     }
+
     @Override
-    public IBooksBuilder setBiography(String biography) {
-        this.biography = biography;
-        return this;
-    }
-    @Override
-    public IBooksBuilder setIsPublished(boolean published) {
+    public IBookBuilder setIsPublished(boolean published) {
         this.published = published;
         return this;
     }
+
     @Override
-    public IBooksBuilder setEditorials(String editorials) {
-        this.editorials = editorials;
+    public IBookBuilder seState(EBookState state) {
+        this.state = state;
         return this;
     }
+
     @Override
-    public IBooksBuilder setViews(int views) {
-        this.views = views;
+    public IBookBuilder setPostType(EBookPostType postType) {
+        this.postType = postType;
         return this;
     }
+
     @Override
-    public IBooksBuilder setSaves(int saves) {
-        this.saves = saves;
+    public IBookBuilder setDownloadType(EBookDownloadType downloadType) {
+        this.downloadType = downloadType;
         return this;
     }
+
+
     @Override
-    public IBooksBuilder setDownloads(int downloads) {
-        this.downloads = downloads;
-        return this;
-    }
-    @Override
-    public IBooksBuilder setCreatedAt(Date createdAt) {
+    public IBookBuilder setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
         return this;
     }
     @Override
-    public IBooksBuilder setUpdatedAt(Date updatedAt) {
+    public IBookBuilder setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
         return this;
     }
 
     @Override
-    public Books build() {
-        return new Books(id, name, nameId, description, biography, published, editorials, views, saves, downloads, createdAt, updatedAt);
+    public Book build() {
+        return new Book(
+                id,
+                authorId,
+                name,
+                nameId,
+                description,
+                published,
+                state,
+                postType,
+                downloadType,
+                createdAt,
+                updatedAt
+        );
     }
 }

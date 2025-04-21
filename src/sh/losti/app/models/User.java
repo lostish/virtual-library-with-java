@@ -1,5 +1,8 @@
 package sh.losti.app.models;
 
+import sh.losti.app.enums.EUserRole;
+import sh.losti.app.enums.EUserState;
+
 import java.util.Date;
 
 public class User {
@@ -8,6 +11,9 @@ public class User {
     private String nameId;
     private String email;
     private String password;
+    private EUserState state;
+    private EUserRole role;
+    private Date lastLogin;
     private Date createdAt;
     private Date updatedAt;
 

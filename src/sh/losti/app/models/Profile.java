@@ -5,8 +5,9 @@ import java.util.Date;
 public class Profile {
     private int id;
     private int userId;
+    private String lastWorkNameId;
+    private String editorialNameId;
     private String biography;
-    private String networks;
     private String books;
     private Date createdAt;
     private Date updatedAt;
@@ -18,11 +19,11 @@ public class Profile {
             String networks,
             String books,
             Date createdAt,
-            Date updatedAt) {
+            Date updatedAt
+    ) {
         this.id = id;
         this.userId = userId;
         this.biography = biography;
-        this.networks = networks;
         this.books = books;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;

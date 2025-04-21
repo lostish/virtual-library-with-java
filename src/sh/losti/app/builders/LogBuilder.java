@@ -12,7 +12,7 @@ public class LogBuilder implements ILogBuilder {
     private String data;
     private String errors;
     private String location;
-    private long timestamp; // = System.currentTimeMillis();
+    private long timestamp;
     private long duration;
 
     @Override
