@@ -1,4 +1,17 @@
 /bin
+/target/
+/out/
+/build/
+
+# Gradle files
+.gradle/
+/**/build/
+
+# Maven files
+/.mvn/
+/logs/
+/dependency-reduced-pom.xml
+/release.properties
 
 # DB files
 *.db
@@ -31,8 +44,26 @@ hs_err_pid*
 replay_pid*
 
 # IntelliJ IDEA
-.idea/
-*.iml
+/.idea/
+/*.iml
 *.ipr
 *.iws
 .idea_modules/
+!/.idea/codeStyles/
+!/.idea/inspectionProfiles/
+
+# Eclipse
+.settings/
+/tmp/
+/*.tmp
+
+!.project
+!.classpath
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+.DB_Store
+Thumbs.db
