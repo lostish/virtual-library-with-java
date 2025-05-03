@@ -37,9 +37,9 @@ public class UserDaoImpl implements IDaoUser {
             return new ProfileBuilder()
                     .setId(rs.getInt(1))
                     .setUserId(rs.getInt(2))
-                    .setBiography(rs.getString(3))
-                    .setNetworks(rs.getString(4))
-                    .setBooks(rs.getString(5))
+                    .setLWNameId(rs.getString(3))
+                    .setLENameId(rs.getString(4))
+                    .setBiography(rs.getString(5))
                     .setCreatedAt(rs.getTimestamp(6))
                     .setUpdatedAt(rs.getTimestamp(7))
                     .build();

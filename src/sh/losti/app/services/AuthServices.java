@@ -30,11 +30,11 @@ public class AuthServices implements IAuthServices {
     private static final Pattern PASSWORD_REGEX = Pattern
             .compile("\"\\\\A(?=\\\\S*?[0-9])(?=\\\\S*?[a-z])(?=\\\\S*?[A-Z])(?=\\\\S*?[@#$%^&+=])\\\\S{8,}\\\\z\"");
 
-
     private Session session = null;
     private SessionData session_data = null;
 
-    private AuthServices() {}
+    private AuthServices() {
+    }
 
     public static synchronized AuthServices getInstance() {
         if (instance == null) {
@@ -55,13 +55,16 @@ public class AuthServices implements IAuthServices {
     public boolean isValidSession(Session session) {
         LogTimer timer = LogTimer.start();
         try (ResultSet rs = dao.verifySession(session)) {
+            Timestamp created_at = rs.getTimestamp("created_at");
             Timestamp expires_at = rs.getTimestamp("expires_at");
 
             this.session = new Session(
                     rs.getInt("session_id"),
                     rs.getInt("user_id"),
                     rs.getString("session_key"),
-                    new Date(expires_at.getTime()));
+                    new Date(created_at.getTime()),
+                    new Date(expires_at.getTime())
+            );
             this.session_data = new SessionData(
                     rs.getInt("user_id"),
                     rs.getString("name"),
@@ -73,7 +76,7 @@ public class AuthServices implements IAuthServices {
             long duration = timer.millis();
             String logFormat = new LogBuilder()
                     .setLevel(ELogLevel.DATABASE)
-                    .setBy(getClass().getName())
+                    .setCreateBy(getClass().getName())
                     .setAction("AuthServices.isValidSession")
                     .setMessage("Verify session expired or invalid data")
                     .setData(session.toString())
@@ -163,6 +166,6 @@ public class AuthServices implements IAuthServices {
 
     @Override
     public void logout() {
-        dao.deleteSession(session.getSession_key());
+        dao.deleteSession(session.getSessionKey());
     }
 }

@@ -28,7 +28,7 @@ public class AuthDaoImpl implements IDaoAuth {
                     LIMIT 1
             """;
     private static final String CREATE_SESSION = "INSERT INTO sessions (user_id, session_key, expires_at) VALUES (?, ?, ?)";
-    private static final String GET_CURRENT_SESSION = "SELECT session_id, user_id, session_key, expires_at FROM sessions WHERE session_key=? LIMIT 1";
+    private static final String GET_CURRENT_SESSION = "SELECT session_id, user_id, session_key, created_at, expires_at FROM sessions WHERE session_key=? LIMIT 1";
     private static final String DELETE_SESSION = "DELETE FROM sessions WHERE session_key=?";
     private static final String LOGIN_GET_DATA = "SELECT id, name, nameId, email FROM users WHERE email = ? LIMIT 1";
     private static final String LOGIN_GET_HASHED_PWD = "SELECT password FROM users WHERE email = ? LIMIT 1";
@@ -66,7 +66,7 @@ public class AuthDaoImpl implements IDaoAuth {
     @Override
     public ResultSet verifySession(Session session) {
         try (PreparedStatement ps = Client.getPreparedStatement(VERIFY_SESSION)) {
-            ps.setString(1, session.getSession_key());
+            ps.setString(1, session.getSessionKey());
             ResultSet rs = ps.executeQuery();
 
             if (!rs.next()) throw new SQLException();
@@ -76,7 +76,7 @@ public class AuthDaoImpl implements IDaoAuth {
 
             if (expires_at.before(now)) {
                 try (PreparedStatement delete = Client.getPreparedStatement(DELETE_SESSION)) {
-                    delete.setString(1, session.getSession_key());
+                    delete.setString(1, session.getSessionKey());
                     delete.executeUpdate();
                 }
                 return null;
@@ -185,7 +185,9 @@ public class AuthDaoImpl implements IDaoAuth {
                     rs.getInt(1),
                     rs.getInt(2),
                     rs.getString(3),
-                    rs.getTimestamp(4));
+                    rs.getTimestamp(4),
+                    rs.getTimestamp(5)
+            );
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "% AUTH SERVICES ERROR: %s", e);
             return null;

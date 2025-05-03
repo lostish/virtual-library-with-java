@@ -22,24 +22,23 @@ import java.util.regex.Pattern;
 
 @WebFilter("/*")
 public class AuthFilter implements Filter {
-    private AuthServices auth = null;
+    private final AuthServices auth = AuthServices.getInstance();
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        try {
+        /*try {
             System.out.println("[DEBUG] Llamando a AuthServices.getInstance()");
             auth = AuthServices.getInstance();
             System.out.println("[DEBUG] AuthServices inicializado OK");
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.fillInStackTrace(); // o usa tu logger
             throw new ServletException("AuthFilter init failed", e);
-        }
+        }*/
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException
-    {
+            throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 

@@ -10,6 +10,7 @@ A project to explore and learn more about the Java ecosystem and how to create w
 - [jbcrypt](https://mvnrepository.com/artifact/org.mindrot/jbcrypt/0.4)
 - [json-20250107](https://repo1.maven.org/maven2/org/json/json/20250107/)
 - [mysql-connector-j](https://mvnrepository.com/artifact/com.mysql/mysql-connector-j/9.2.0)
+- [mssql-jdbc](https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc/12.10.0.jre11)
 - [sqlite-jdbc](https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc/3.49.1.0)
 
 > PR's Open!

@@ -7,5 +7,6 @@
 		<level name="jbcrypt-0.4" value="project"/>
 		<level name="json" value="project"/>
 		<level name="sqlite-jdbc-3.49.1.0" value="project"/>
+		<level name="mssql-jdbc-12.10.0.jre11" value="project"/>
 	</levels>
 </component>

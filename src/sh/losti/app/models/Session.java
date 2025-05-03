@@ -46,6 +46,9 @@ public class Session {
                     json.getInt("session_id"),
                     json.getInt("user_id"),
                     json.getString("session_key"),
+                    json.has("created_at") && !json.isNull("created_at")
+                            ? new Date(json.getLong("created_at"))
+                            : null,
                     json.has("expires_at") && !json.isNull("expires_at")
                             ? new Date(json.getLong("expires_at"))
                             : null);
