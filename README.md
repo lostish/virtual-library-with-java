@@ -2,12 +2,15 @@
 
 A project to explore and learn more about the Java ecosystem and how to create web applications with it.
 
+> You can see the automation [scripts](./scripts/) in case you work in an environment where you set up server manually.
+
 **Dependencies**
 
-- javax-servlet-api
-- jbcrypt
-- json-20250107
-- mysql-connector-j
+- [javax-servlet-api](https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api/4.0.1)
+- [jbcrypt](https://mvnrepository.com/artifact/org.mindrot/jbcrypt/0.4)
+- [json-20250107](https://repo1.maven.org/maven2/org/json/json/20250107/)
+- [mysql-connector-j](https://mvnrepository.com/artifact/com.mysql/mysql-connector-j/9.2.0)
+- [sqlite-jdbc](https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc/3.49.1.0)
 
 > PR's Open!
 

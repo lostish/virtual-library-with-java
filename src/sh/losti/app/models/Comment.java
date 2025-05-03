@@ -6,7 +6,7 @@ public class Comment {
     private int userId;
     private int postId;
     private int commentId;
-    private String comment;
+    private String body;
     private String resources;
     private Date createdAt;
 
@@ -14,15 +14,14 @@ public class Comment {
             int userId,
             int postId,
             int commentId,
-            String comment,
+            String body,
             String resources,
-            Date createdAt
-    ) {
-       this.userId = userId;
-       this.postId = postId;
-       this.commentId = commentId;
-       this.comment = comment;
-       this.resources = resources;
-       this.createdAt = createdAt;
+            Date createdAt) {
+        this.userId = userId;
+        this.postId = postId;
+        this.commentId = commentId;
+        this.body = body;
+        this.resources = resources;
+        this.createdAt = createdAt;
     }
 }

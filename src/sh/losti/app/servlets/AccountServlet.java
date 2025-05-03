@@ -31,7 +31,7 @@ public class AccountServlet extends HttpServlet {
 
         if (cookies != null) {
             Arrays.stream(cookies)
-                    .filter(cookie -> AuthConstants.authCookies[0].equals(cookie.getName()))
+                    .filter(cookie -> AuthConstants.getAuthCookies()[0].equals(cookie.getName()))
                     .findFirst()
                     .ifPresent(cookie -> session = Session.fromJson(cookie.getValue()));
         }
@@ -86,7 +86,7 @@ public class AccountServlet extends HttpServlet {
 
         if (cookies != null) {
             Arrays.stream(cookies)
-                    .filter(cookie -> AuthConstants.authCookies[0].equals(cookie.getName()))
+                    .filter(cookie -> AuthConstants.getAuthCookies()[0].equals(cookie.getName()))
                     .findFirst()
                     .ifPresent(cookie -> session = Session.fromJson(cookie.getValue()));
         }

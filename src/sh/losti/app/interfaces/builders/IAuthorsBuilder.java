@@ -3,13 +3,21 @@ package sh.losti.app.interfaces.builders;
 import sh.losti.app.models.Authors;
 
 public interface IAuthorsBuilder {
+    int getId();
+
+    int getUserId();
+
+    int getLastWorkId();
+
+    int getEditorialId();
+
     IAuthorsBuilder setId(int id);
-    IAuthorsBuilder setName(String name);
-    IAuthorsBuilder setNameId(String nameId);
-    IAuthorsBuilder setDescription(String description);
-    IAuthorsBuilder setImageUrl(String imageUrl);
-    IAuthorsBuilder setGenresList(String[] genresList);
-    IAuthorsBuilder setLastWorkId(String lastWorkId);
-    IAuthorsBuilder setEditorialId(String editorialId);
+
+    IAuthorsBuilder setUserId(int userId);
+
+    IAuthorsBuilder setLastWorkId(int lastWorkId);
+
+    IAuthorsBuilder setEditorialId(int editorialId);
+
     Authors build();
 }

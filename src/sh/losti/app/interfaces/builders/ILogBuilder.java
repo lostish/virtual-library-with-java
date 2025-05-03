@@ -6,8 +6,8 @@ import sh.losti.app.models.Log;
 public interface ILogBuilder {
     ELogLevel getLogLevel();
     ILogBuilder setLevel(ELogLevel level);
-    String getBy();
-    ILogBuilder setBy(String by);
+    String getCreateBy();
+    ILogBuilder setCreateBy(String createBy);
     String getAction();
     ILogBuilder setAction(String action);
     String getMessage();

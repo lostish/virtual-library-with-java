@@ -15,6 +15,10 @@ public class UserDaoImpl implements IDaoUser {
 
     private UserDaoImpl() {}
 
+    static {
+        Client.ensureInitialized();
+    }
+
     public static synchronized UserDaoImpl getInstance() {
         if (instance == null) {
             instance = new UserDaoImpl();

@@ -6,7 +6,7 @@ import sh.losti.app.models.Log;
 
 public class LogBuilder implements ILogBuilder {
     private ELogLevel level;
-    private String by;
+    private String createBy;
     private String action;
     private String message;
     private String data;
@@ -27,13 +27,13 @@ public class LogBuilder implements ILogBuilder {
     }
 
     @Override
-    public String getBy() {
-        return by;
+    public String getCreateBy() {
+        return createBy;
     }
 
     @Override
-    public ILogBuilder setBy(String by) {
-        this.by = by;
+    public ILogBuilder setCreateBy(String createBy) {
+        this.createBy = createBy;
         return this;
     }
 
@@ -123,27 +123,25 @@ public class LogBuilder implements ILogBuilder {
         return String.format(
                 "[%s] [%s] [%s] %s @ %d (%s) [duration=%dms]",
                 level.toString(),
-                by,
+                createBy,
                 action,
                 message,
                 timestamp,
                 location != null ? location : "unknown",
-                duration
-        );
+                duration);
     }
 
     @Override
     public Log build() {
         return new Log(
                 level,
-                by,
+                createBy,
                 action,
                 message,
                 data,
                 errors,
                 location,
                 timestamp,
-                duration
-        );
-    };
+                duration);
+    }
 }

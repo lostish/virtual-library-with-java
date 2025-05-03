@@ -8,23 +8,22 @@ public class Profile {
     private String lastWorkNameId;
     private String editorialNameId;
     private String biography;
-    private String books;
     private Date createdAt;
     private Date updatedAt;
 
     public Profile(
             int id,
             int userId,
+            String lastWorkNameId,
+            String editorialNameId,
             String biography,
-            String networks,
-            String books,
             Date createdAt,
-            Date updatedAt
-    ) {
+            Date updatedAt) {
         this.id = id;
         this.userId = userId;
+        this.lastWorkNameId = lastWorkNameId;
+        this.editorialNameId = editorialNameId;
         this.biography = biography;
-        this.books = books;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }

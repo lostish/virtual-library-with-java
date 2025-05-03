@@ -40,6 +40,8 @@ fi
 
 echo "🔍 Compilando proyecto..."
 
+rm -rf bin
+
 javac -Xlint:none -d bin -cp "lib/*" $(find src/sh/losti/app -name '*.java')
 
 echo "✅ Compilacion terminada!"
