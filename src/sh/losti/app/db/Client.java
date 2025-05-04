@@ -19,6 +19,7 @@ public class Client {
     private Client() {
     }
 
+    /*
     public static synchronized void ensureInitialized() {
         if (!initialized) {
             try {
@@ -30,18 +31,19 @@ public class Client {
             }
         }
     }
+    */
 
     public static Connection getConnection() throws SQLException {
         // Usign SQL SERVER JDBC Driver
         String url = System.getenv("DB_URL");
-        //String user = System.getenv("DB_USER");
-        //String password = System.getenv("DB_PWD");
+        String user = System.getenv("DB_USER");
+        String password = System.getenv("DB_PWD");
 
-        if (url == null /*|| user == null || password == null*/) {
+        if (url == null || user == null || password == null) {
             throw new IllegalStateException("Las variables de entorno de la base de datos no están configuradas.");
         }
 
-        return DriverManager.getConnection(url); //user, password
+        return DriverManager.getConnection(url, user, password);
     }
 
     public static void mountTablesConfig() throws SQLException {

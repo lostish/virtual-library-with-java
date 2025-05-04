@@ -37,10 +37,6 @@ public class AuthDaoImpl implements IDaoAuth {
 
     private AuthDaoImpl() {}
 
-    static {
-        Client.ensureInitialized();
-    }
-
     public static synchronized AuthDaoImpl getInstance() {
         if (instance == null) {
             instance = new AuthDaoImpl();

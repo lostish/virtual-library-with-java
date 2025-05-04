@@ -28,7 +28,7 @@ public class AuthServices implements IAuthServices {
             "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
             Pattern.CASE_INSENSITIVE);
     private static final Pattern PASSWORD_REGEX = Pattern
-            .compile("\"\\\\A(?=\\\\S*?[0-9])(?=\\\\S*?[a-z])(?=\\\\S*?[A-Z])(?=\\\\S*?[@#$%^&+=])\\\\S{8,}\\\\z\"");
+            .compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$");
 
     private Session session = null;
     private SessionData session_data = null;
@@ -38,7 +38,12 @@ public class AuthServices implements IAuthServices {
 
     public static synchronized AuthServices getInstance() {
         if (instance == null) {
-            instance = new AuthServices();
+            try {
+                instance = new AuthServices();
+            } catch (Exception e) {
+                logger.log(Level.SEVERE, "Error al crear AuthServices", e);
+                throw new RuntimeException("No se pudo inicializar AuthServices", e);
+            }
         }
         return instance;
     }
@@ -55,6 +60,9 @@ public class AuthServices implements IAuthServices {
     public boolean isValidSession(Session session) {
         LogTimer timer = LogTimer.start();
         try (ResultSet rs = dao.verifySession(session)) {
+            if (rs == null) {
+                return false;
+            }
             Timestamp created_at = rs.getTimestamp("created_at");
             Timestamp expires_at = rs.getTimestamp("expires_at");
 
