@@ -6,5 +6,4 @@ import java.sql.SQLException;
 
 public interface IUserServices {
     Profile getProfileData(int id) throws SQLException;
-
 }

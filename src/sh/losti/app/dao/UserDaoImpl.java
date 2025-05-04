@@ -28,7 +28,7 @@ public class UserDaoImpl implements IDaoUser {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
-            if (!rs.next()) throw new SQLException();
+            if (!rs.next()) throw new SQLException("No profile found.");
 
             return new ProfileBuilder()
                     .setId(rs.getInt(1))

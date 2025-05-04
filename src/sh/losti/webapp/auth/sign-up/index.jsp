@@ -55,7 +55,7 @@
             </div>
           </div>
 
-          <form class="form-body">
+          <form class="form-body" action="/auth/sign-up" method="POST">
             <div class="form-group">
               <label for="name">Nombre completo</label>
               <input

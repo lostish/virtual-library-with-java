@@ -28,7 +28,7 @@ public class RegisterServlet extends HttpServlet {
 
         res.setContentType("application/json");
 
-        if (!auth.isValidEmail(email) || !auth.isValidPassword(password)) {
+        if (auth.isValidEmail(email) || auth.isValidPassword(password)) {
             res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             res.getWriter().write("{\"error\": \"Email o contraseña inválidos\"}");
             return;

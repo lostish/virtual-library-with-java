@@ -55,7 +55,7 @@
             </div>
           </div>
 
-          <form class="form-body">
+          <form class="form-body" action="/auth/sign-in" method="POST">
             <div class="form-group">
               <label for="email">Correo electrónico</label>
               <input

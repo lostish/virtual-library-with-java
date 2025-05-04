@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public class Client {
     private static final Logger logger = Logger.getLogger(Client.class.getName());
-    private static boolean initialized = false;
+    //private static final boolean initialized = false;
 
     private Client() {
     }

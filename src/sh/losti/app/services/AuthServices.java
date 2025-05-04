@@ -3,6 +3,7 @@ package sh.losti.app.services;
 import org.mindrot.jbcrypt.BCrypt;
 
 import sh.losti.app.builders.LogBuilder;
+import sh.losti.app.constants.AuthConstants;
 import sh.losti.app.dao.AuthDaoImpl;
 import sh.losti.app.enums.ELogLevel;
 import sh.losti.app.enums.EVerifySessionData;
@@ -18,17 +19,11 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 public class AuthServices implements IAuthServices {
     private static final Logger logger = Logger.getLogger(AuthServices.class.getName());
-    private static AuthServices instance;
     private static final AuthDaoImpl dao = AuthDaoImpl.getInstance();
-    private static final Pattern EMAIL_REGEX = Pattern.compile(
-            "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
-            Pattern.CASE_INSENSITIVE);
-    private static final Pattern PASSWORD_REGEX = Pattern
-            .compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$");
+    private static AuthServices instance;
 
     private Session session = null;
     private SessionData session_data = null;
@@ -109,13 +104,11 @@ public class AuthServices implements IAuthServices {
 
     @Override
     public boolean isValidEmail(String email) {
-        return EMAIL_REGEX.matcher(email).matches();
+        return AuthConstants.getEmailRegex().matcher(email).matches();
     }
 
     @Override
-    public boolean isValidPassword(String password) {
-        return PASSWORD_REGEX.matcher(password).matches();
-    }
+    public boolean isValidPassword(String password) { return AuthConstants.getPasswordRegex().matcher(password).matches(); }
 
     @Override
     public Session getSession() {
@@ -138,9 +131,10 @@ public class AuthServices implements IAuthServices {
     }
 
     @Override
-    public boolean checkPassword(String password, String hashedPassword) {
-        return BCrypt.checkpw(password, hashedPassword);
-    }
+    public String getHashedPassword(String email) { return dao.getHashedPassword(email); }
+
+    @Override
+    public boolean checkPassword(String password, String hashedPassword) { return BCrypt.checkpw(password, hashedPassword); }
 
     @Override
     public boolean login(String email, String password) {
@@ -171,6 +165,11 @@ public class AuthServices implements IAuthServices {
 
         return dao.createUser(name, nameId, email, hashedPassword);
     }
+
+    @Override
+    public void changePassword(String email, String password) {
+        dao.updateHashedPassword(email, password);
+    };
 
     @Override
     public void logout() {

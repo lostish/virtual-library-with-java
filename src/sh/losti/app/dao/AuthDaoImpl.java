@@ -34,6 +34,7 @@ public class AuthDaoImpl implements IDaoAuth {
     private static final String LOGIN_GET_HASHED_PWD = "SELECT password FROM users WHERE email = ? LIMIT 1";
     private static final String CREATE_USER = "INSERT INTO users (name, nameId, email, password) VALUES (?, ?, ?, ?)";
     private static final String GET_SESSION_DATA = "SELECT id, name, nameId, email FROM users WHERE id = ? AND email = ? LIMIT 1";
+    private static final String UPADTE_USER_PWD = "UPDATE users SET password = ? WHERE email = ?";
 
     private AuthDaoImpl() {}
 
@@ -131,6 +132,24 @@ public class AuthDaoImpl implements IDaoAuth {
             return null;
         }
     }
+
+    @Override
+    public void updateHashedPassword(String email, String newPwd) {
+        try (PreparedStatement ps = Client.getPreparedStatement(UPADTE_USER_PWD)) {
+            ps.setString(1, newPwd);
+            ps.setString(2, email);
+            int rs =  ps.executeUpdate();
+
+            if (rs > 0) {
+                logger.log(Level.INFO, "% AUTH DAO IMPL - Update password");
+                return;
+            }
+            logger.log(Level.SEVERE, "% AUTH DAO IMPL - Password has been not update");
+        }
+        catch (SQLException e) {
+            e.fillInStackTrace();
+        }
+      };
 
     @Override
     public SessionData getSessionData(String email) {
