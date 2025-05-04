@@ -7,11 +7,46 @@ import sh.losti.app.models.Profile;
 public class ProfileBuilder implements IProfileBuilder {
     private int id;
     private int userId;
+    private String lastWorkNameId;
+    private String editorialNameId;
     private String biography;
-    private String networks;
-    private String books;
     private Date createdAt;
     private Date updatedAt;
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public int getUserId() {
+        return userId;
+    }
+
+    @Override
+    public String getLWNameId() {
+        return lastWorkNameId;
+    }
+
+    @Override
+    public String getLENameId() {
+        return editorialNameId;
+    }
+
+    @Override
+    public String getBiography() {
+        return biography;
+    }
+
+    @Override
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    @Override
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
 
     @Override
     public IProfileBuilder setId(int id) {
@@ -26,20 +61,20 @@ public class ProfileBuilder implements IProfileBuilder {
     }
 
     @Override
+    public IProfileBuilder setLWNameId(String lastWorkNameId) {
+        this.lastWorkNameId = lastWorkNameId;
+        return this;
+    }
+
+    @Override
+    public IProfileBuilder setLENameId(String editorialNameId) {
+        this.editorialNameId = editorialNameId;
+        return this;
+    }
+
+    @Override
     public IProfileBuilder setBiography(String biography) {
         this.biography = biography;
-        return this;
-    }
-
-    @Override
-    public IProfileBuilder setNetworks(String networks) {
-        this.networks = networks;
-        return this;
-    }
-
-    @Override
-    public IProfileBuilder setBooks(String books) {
-        this.books = books;
         return this;
     }
 
@@ -57,6 +92,6 @@ public class ProfileBuilder implements IProfileBuilder {
 
     @Override
     public Profile build() {
-        return new Profile(id, userId, biography, networks, books, createdAt, updatedAt);
+        return new Profile(id, userId, lastWorkNameId, editorialNameId, biography, createdAt, updatedAt);
     }
 }

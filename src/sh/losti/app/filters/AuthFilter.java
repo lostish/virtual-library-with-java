@@ -18,46 +18,39 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 @WebFilter("/*")
 public class AuthFilter implements Filter {
     private AuthServices auth = null;
-    private static final String accountPath = "/account";
-    private static final String sortSettingsPath = "/settings";
-    private static final String signInPath = "/auth/sign-in";
-    private static final String signUpPath = "/auth/sign-up";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        auth = AuthServices.getInstance();
-        System.out.println("[AuthFilter] Inicializado");
-    }
-
-    @Override
-    public void destroy() {
-        System.out.println("[AuthFilter] Destruido");
-        auth = null;
+        try {
+            System.out.println("[DEBUG] Llamando a AuthServices.getInstance()");
+            auth = AuthServices.getInstance();
+            System.out.println("[DEBUG] AuthServices inicializado OK");
+        } catch (Exception e) {
+            e.fillInStackTrace(); // o usa tu logger
+            throw new ServletException("AuthFilter init failed", e);
+        }
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException
-    {
+            throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
         String ctx = req.getContextPath();
-        String servletPath = req.getServletPath();
-        String pathInfo = req.getPathInfo();
+        String path = req.getRequestURI()
+                .substring(req.getContextPath().length());
 
         Session session = null;
         SessionData sessionData = null;
 
-        // Construir la ruta completa
-        String fullPath = (servletPath + (pathInfo != null ? pathInfo : "")).toLowerCase();
-
         // Si es una ruta pública bajo /account/of/, permitir el acceso
-        if (fullPath.matches("/account/of/[a-z0-9_-]+")) {
+        if (path.matches("/account/of/[a-z0-9_-]+")) {
             chain.doFilter(req, res);
             return;
         }
@@ -66,10 +59,10 @@ public class AuthFilter implements Filter {
 
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (AuthConstants.authCookies[0].equals(cookie.getName())) {
+                if (AuthConstants.getAuthCookies()[0].equals(cookie.getName())) {
                     session = Session.fromJson(cookie.getValue());
                 }
-                if (AuthConstants.authCookies[1].equals(cookie.getName())) {
+                if (AuthConstants.getAuthCookies()[1].equals(cookie.getName())) {
                     sessionData = SessionData.fromJSON(cookie.getValue());
                 }
             }
@@ -78,11 +71,25 @@ public class AuthFilter implements Filter {
         boolean isLoggedIn = session != null && auth.isValidSession(session);
         VerifySessionResult vsr = auth.verifySessionData(sessionData);
 
-        boolean wantsAccountBase    = accountPath.equals(servletPath)   && (pathInfo == null || "/".equals(pathInfo));
-        boolean wantsAccountSetting = accountPath.equals(servletPath)   && sortSettingsPath.equals(pathInfo);
+        boolean wantsAccount = AuthConstants.getAccountPath().equals(path);
+        boolean wantsAccountSetting = AuthConstants.getSortSettingsPath().equals(path);
+        boolean wantsSignIn = AuthConstants.getSignInPath().equals(path);
+        boolean wantsSignUp = AuthConstants.getSignUpPath().equals(path);
 
-        boolean wantsSignIn = signInPath.equals(servletPath);
-        boolean wantsSignUp = signUpPath.equals(servletPath);
+        if (path.equals("/") || path.isEmpty()) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        if (Pattern.matches(AuthConstants.getRegexAdmitResources(), path)) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        if (!isLoggedIn && (wantsAccount || wantsAccountSetting)) {
+            res.sendRedirect(ctx + AuthConstants.getSignInPath());
+            return;
+        }
 
         if (isLoggedIn && vsr.getStatus() == EVerifySessionData.UPDATED) {
             SessionData fresh = vsr.getSessionData();
@@ -93,13 +100,8 @@ public class AuthFilter implements Filter {
             res.addCookie(sdCookie);
         }
 
-        if (!isLoggedIn && (wantsAccountBase || wantsAccountSetting)) {
-            res.sendRedirect(ctx + signInPath);
-            return;
-        }
-
         if (isLoggedIn && (wantsSignIn || wantsSignUp)) {
-            res.sendRedirect(ctx + accountPath);
+            res.sendRedirect(ctx + AuthConstants.getAccountPath());
             return;
         }
 

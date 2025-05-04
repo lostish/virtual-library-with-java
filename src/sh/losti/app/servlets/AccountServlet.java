@@ -1,6 +1,9 @@
 package sh.losti.app.servlets;
 
 import sh.losti.app.constants.AuthConstants;
+import sh.losti.app.enums.EBookDownloadType;
+import sh.losti.app.enums.EBookPostType;
+import sh.losti.app.enums.EBookState;
 import sh.losti.app.models.Session;
 import sh.losti.app.services.AuthServices;
 
@@ -10,6 +13,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -27,7 +31,7 @@ public class AccountServlet extends HttpServlet {
 
         if (cookies != null) {
             Arrays.stream(cookies)
-                    .filter(cookie -> AuthConstants.authCookies[0].equals(cookie.getName()))
+                    .filter(cookie -> AuthConstants.getAuthCookies()[0].equals(cookie.getName()))
                     .findFirst()
                     .ifPresent(cookie -> session = Session.fromJson(cookie.getValue()));
         }
@@ -72,13 +76,35 @@ public class AccountServlet extends HttpServlet {
         req.getRequestDispatcher("/WEB-INF/views/clients/public-profile.jsp").forward(req, res);
     }
 
-    /*@Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse res)  {
-        // Maneja las solicitudes POST si es necesario
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         String pathInfo = req.getPathInfo();
-        if (pathInfo == null ||  pathInfo.startsWith("/")) {
+        String ctx = req.getContextPath();
+        String contentTye = req.getContentType();
 
+        Cookie[] cookies = req.getCookies();
+
+        if (cookies != null) {
+            Arrays.stream(cookies)
+                    .filter(cookie -> AuthConstants.getAuthCookies()[0].equals(cookie.getName()))
+                    .findFirst()
+                    .ifPresent(cookie -> session = Session.fromJson(cookie.getValue()));
         }
 
-    }*/
+        boolean isLoggedIn = session != null && auth.isValidSession(session);
+
+        if (!isLoggedIn) res.sendRedirect(ctx + "/unauthorized");
+
+        if ((pathInfo != null && pathInfo.equals("/upload")) && contentTye.equals("multipart/form-data")) {
+            int userId = Integer.parseInt(req.getParameter("user-id"));
+            String name = req.getParameter("name");
+            String description = req.getParameter("description");
+            boolean published = Boolean.parseBoolean(req.getParameter("published"));
+            EBookState state = EBookState.valueOf(req.getParameter("state"));
+            EBookPostType postType = EBookPostType.valueOf(req.getParameter("post-type"));
+            EBookDownloadType download = EBookDownloadType.valueOf(req.getParameter("download"));
+            File file = new File(req.getParameter("file"));
+        }
+
+    }
 }

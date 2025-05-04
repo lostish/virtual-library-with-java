@@ -2,11 +2,15 @@ package sh.losti.app.services;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import sh.losti.app.builders.LogBuilder;
+import sh.losti.app.constants.AuthConstants;
 import sh.losti.app.dao.AuthDaoImpl;
+import sh.losti.app.enums.ELogLevel;
 import sh.losti.app.enums.EVerifySessionData;
 import sh.losti.app.interfaces.services.IAuthServices;
 import sh.losti.app.models.Session;
 import sh.losti.app.models.SessionData;
+import sh.losti.app.utils.LogTimer;
 import sh.losti.app.utils.VerifySessionResult;
 
 import java.sql.ResultSet;
@@ -15,27 +19,26 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 public class AuthServices implements IAuthServices {
     private static final Logger logger = Logger.getLogger(AuthServices.class.getName());
-    private static AuthServices instance;
     private static final AuthDaoImpl dao = AuthDaoImpl.getInstance();
-    private static final Pattern EMAIL_REGEX = Pattern.compile(
-            "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
-            Pattern.CASE_INSENSITIVE);
-    private static final Pattern PASSWORD_REGEX = Pattern
-            .compile("\"\\\\A(?=\\\\S*?[0-9])(?=\\\\S*?[a-z])(?=\\\\S*?[A-Z])(?=\\\\S*?[@#$%^&+=])\\\\S{8,}\\\\z\"");
-
+    private static AuthServices instance;
 
     private Session session = null;
     private SessionData session_data = null;
 
-    private AuthServices() {}
+    private AuthServices() {
+    }
 
     public static synchronized AuthServices getInstance() {
         if (instance == null) {
-            instance = new AuthServices();
+            try {
+                instance = new AuthServices();
+            } catch (Exception e) {
+                logger.log(Level.SEVERE, "Error al crear AuthServices", e);
+                throw new RuntimeException("No se pudo inicializar AuthServices", e);
+            }
         }
         return instance;
     }
@@ -50,14 +53,21 @@ public class AuthServices implements IAuthServices {
 
     @Override
     public boolean isValidSession(Session session) {
+        LogTimer timer = LogTimer.start();
         try (ResultSet rs = dao.verifySession(session)) {
+            if (rs == null) {
+                return false;
+            }
+            Timestamp created_at = rs.getTimestamp("created_at");
             Timestamp expires_at = rs.getTimestamp("expires_at");
 
             this.session = new Session(
                     rs.getInt("session_id"),
                     rs.getInt("user_id"),
                     rs.getString("session_key"),
-                    new Date(expires_at.getTime()));
+                    new Date(created_at.getTime()),
+                    new Date(expires_at.getTime())
+            );
             this.session_data = new SessionData(
                     rs.getInt("user_id"),
                     rs.getString("name"),
@@ -66,7 +76,19 @@ public class AuthServices implements IAuthServices {
 
             return true;
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "% Error checking session", e);
+            long duration = timer.millis();
+            String logFormat = new LogBuilder()
+                    .setLevel(ELogLevel.DATABASE)
+                    .setCreateBy(getClass().getName())
+                    .setAction("AuthServices.isValidSession")
+                    .setMessage("Verify session expired or invalid data")
+                    .setData(session.toString())
+                    .setErrors(null)
+                    .setLocation(e)
+                    .setLocalTimestamp(System.currentTimeMillis())
+                    .setDuration(duration)
+                    .formatLog();
+            logger.config(logFormat);
             return false;
         }
     }
@@ -82,13 +104,11 @@ public class AuthServices implements IAuthServices {
 
     @Override
     public boolean isValidEmail(String email) {
-        return EMAIL_REGEX.matcher(email).matches();
+        return AuthConstants.getEmailRegex().matcher(email).matches();
     }
 
     @Override
-    public boolean isValidPassword(String password) {
-        return PASSWORD_REGEX.matcher(password).matches();
-    }
+    public boolean isValidPassword(String password) { return AuthConstants.getPasswordRegex().matcher(password).matches(); }
 
     @Override
     public Session getSession() {
@@ -111,9 +131,10 @@ public class AuthServices implements IAuthServices {
     }
 
     @Override
-    public boolean checkPassword(String password, String hashedPassword) {
-        return BCrypt.checkpw(password, hashedPassword);
-    }
+    public String getHashedPassword(String email) { return dao.getHashedPassword(email); }
+
+    @Override
+    public boolean checkPassword(String password, String hashedPassword) { return BCrypt.checkpw(password, hashedPassword); }
 
     @Override
     public boolean login(String email, String password) {
@@ -146,7 +167,12 @@ public class AuthServices implements IAuthServices {
     }
 
     @Override
+    public void changePassword(String email, String password) {
+        dao.updateHashedPassword(email, password);
+    };
+
+    @Override
     public void logout() {
-        dao.deleteSession(session.getSession_key());
+        dao.deleteSession(session.getSessionKey());
     }
 }

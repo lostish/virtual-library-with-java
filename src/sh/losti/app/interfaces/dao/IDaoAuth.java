@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 public interface IDaoAuth {
     boolean createUser(String name, String nameId, String email, String password);
     String getHashedPassword(String email);
+    void updateHashedPassword(String email, String newPwd);
     ResultSet verifySession(Session session);
     VerifySessionResult verifySessionData(SessionData currentSessionData);
     SessionData  getSessionData(String email);

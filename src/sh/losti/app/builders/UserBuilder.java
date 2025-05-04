@@ -1,5 +1,7 @@
 package sh.losti.app.builders;
 
+import sh.losti.app.enums.EUserRole;
+import sh.losti.app.enums.EUserState;
 import sh.losti.app.interfaces.builders.IUserBuilder;
 import sh.losti.app.models.User;
 
@@ -11,6 +13,9 @@ public class UserBuilder implements IUserBuilder {
     private String nameId;
     private String email;
     private String password;
+    private EUserState state;
+    private EUserRole role;
+    private Date lastLogin;
     private Date createdAt;
     private Date updatedAt;
 
@@ -41,6 +46,24 @@ public class UserBuilder implements IUserBuilder {
     @Override
     public IUserBuilder setPassword(String password) {
         this.password = password;
+        return this;
+    }
+
+    @Override
+    public IUserBuilder setState(EUserState state) {
+        this.state = state;
+        return this;
+    }
+
+    @Override
+    public IUserBuilder setRole(EUserRole role) {
+        this.role = role;
+        return this;
+    }
+
+    @Override
+    public IUserBuilder setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
         return this;
     }
 

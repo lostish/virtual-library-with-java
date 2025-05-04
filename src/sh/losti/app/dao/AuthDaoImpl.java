@@ -28,12 +28,13 @@ public class AuthDaoImpl implements IDaoAuth {
                     LIMIT 1
             """;
     private static final String CREATE_SESSION = "INSERT INTO sessions (user_id, session_key, expires_at) VALUES (?, ?, ?)";
-    private static final String GET_CURRENT_SESSION = "SELECT session_id, user_id, session_key, expires_at FROM sessions WHERE session_key=? LIMIT 1";
+    private static final String GET_CURRENT_SESSION = "SELECT session_id, user_id, session_key, created_at, expires_at FROM sessions WHERE session_key=? LIMIT 1";
     private static final String DELETE_SESSION = "DELETE FROM sessions WHERE session_key=?";
     private static final String LOGIN_GET_DATA = "SELECT id, name, nameId, email FROM users WHERE email = ? LIMIT 1";
     private static final String LOGIN_GET_HASHED_PWD = "SELECT password FROM users WHERE email = ? LIMIT 1";
     private static final String CREATE_USER = "INSERT INTO users (name, nameId, email, password) VALUES (?, ?, ?, ?)";
     private static final String GET_SESSION_DATA = "SELECT id, name, nameId, email FROM users WHERE id = ? AND email = ? LIMIT 1";
+    private static final String UPADTE_USER_PWD = "UPDATE users SET password = ? WHERE email = ?";
 
     private AuthDaoImpl() {}
 
@@ -62,7 +63,7 @@ public class AuthDaoImpl implements IDaoAuth {
     @Override
     public ResultSet verifySession(Session session) {
         try (PreparedStatement ps = Client.getPreparedStatement(VERIFY_SESSION)) {
-            ps.setString(1, session.getSession_key());
+            ps.setString(1, session.getSessionKey());
             ResultSet rs = ps.executeQuery();
 
             if (!rs.next()) throw new SQLException();
@@ -72,7 +73,7 @@ public class AuthDaoImpl implements IDaoAuth {
 
             if (expires_at.before(now)) {
                 try (PreparedStatement delete = Client.getPreparedStatement(DELETE_SESSION)) {
-                    delete.setString(1, session.getSession_key());
+                    delete.setString(1, session.getSessionKey());
                     delete.executeUpdate();
                 }
                 return null;
@@ -133,6 +134,24 @@ public class AuthDaoImpl implements IDaoAuth {
     }
 
     @Override
+    public void updateHashedPassword(String email, String newPwd) {
+        try (PreparedStatement ps = Client.getPreparedStatement(UPADTE_USER_PWD)) {
+            ps.setString(1, newPwd);
+            ps.setString(2, email);
+            int rs =  ps.executeUpdate();
+
+            if (rs > 0) {
+                logger.log(Level.INFO, "% AUTH DAO IMPL - Update password");
+                return;
+            }
+            logger.log(Level.SEVERE, "% AUTH DAO IMPL - Password has been not update");
+        }
+        catch (SQLException e) {
+            e.fillInStackTrace();
+        }
+      };
+
+    @Override
     public SessionData getSessionData(String email) {
         try (PreparedStatement ps = Client.getPreparedStatement(LOGIN_GET_DATA)) {
             ps.setString(1, email);
@@ -181,7 +200,9 @@ public class AuthDaoImpl implements IDaoAuth {
                     rs.getInt(1),
                     rs.getInt(2),
                     rs.getString(3),
-                    rs.getTimestamp(4));
+                    rs.getTimestamp(4),
+                    rs.getTimestamp(5)
+            );
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "% AUTH SERVICES ERROR: %s", e);
             return null;

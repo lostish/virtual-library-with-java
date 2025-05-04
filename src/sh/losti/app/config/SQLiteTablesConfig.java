@@ -144,11 +144,13 @@ public class SQLiteTablesConfig implements ITablesConfig {
         return """
                 CREATE TABLE IF NOT EXISTS logs (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    level TEXT NOT NULL CHECK(level IN ('FINE', 'SEVERE', 'CONFIG', 'ALL', 'INFO', 'WARNING', 'ERROR', 'DATABASE')),
                     by TEXT NOT NULL,
-                    where TEXT NOT NULL,
-                    handler TEXT NOT NULL,
+                    action TEXT NOT NULL,
+                    message TEXT NOT NULL,
                     data TEXT,
                     errors TEXT,
+                    location TEXT,
                     duration INTEGER NOT NULL DEFAULT 0,
                     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 )
