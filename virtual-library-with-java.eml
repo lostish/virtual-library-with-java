@@ -8,5 +8,7 @@
 		<level name="json" value="project"/>
 		<level name="sqlite-jdbc-3.49.1.0" value="project"/>
 		<level name="mssql-jdbc-12.10.0.jre11" value="project"/>
+		<level name="java-dotenv-5.2.2" value="project"/>
+		<level name="kotlin-stdlib-1.9.0" value="project"/>
 	</levels>
 </component>

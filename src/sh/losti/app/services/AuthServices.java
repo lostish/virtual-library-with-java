@@ -4,6 +4,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import sh.losti.app.builders.LogBuilder;
 import sh.losti.app.constants.AuthConstants;
+import sh.losti.app.context.AuthContext;
 import sh.losti.app.dao.AuthDaoImpl;
 import sh.losti.app.enums.ELogLevel;
 import sh.losti.app.enums.EVerifySessionData;
@@ -17,6 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,7 +51,35 @@ public class AuthServices implements IAuthServices {
                 .trim() // eliminar espacios al inicio y al final
                 .replaceAll("[^a-z0-9\\s]", "") // eliminar todo lo que no sea letra, número o espacio
                 .replaceAll("\\s+", "-"); // reemplazar espacios (uno o más) por guiones
+                //+ "-" + UUID.randomUUID().toString().substring(0, 6);
     }
+
+    /*
+    public AuthContext getAuthContext(Session session) {
+        try (ResultSet rs = dao.verifySession(session)) {
+            if (rs == null) return null;
+
+            Session validSession = new Session(
+                    rs.getInt("session_id"),
+                    rs.getInt("user_id"),
+                    rs.getString("session_key"),
+                    rs.getTimestamp("created_at"),
+                    rs.getTimestamp("expires_at")
+            );
+
+            SessionData sessionData = new SessionData(
+                    rs.getInt("user_id"),
+                    rs.getString("name"),
+                    rs.getString("nameId"),
+                    rs.getString("email")
+            );
+
+            return new AuthContext(validSession, sessionData);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    */
 
     @Override
     public boolean isValidSession(Session session) {
@@ -74,7 +104,7 @@ public class AuthServices implements IAuthServices {
                     rs.getString("nameId"),
                     rs.getString("email"));
 
-            return true;
+            return expires_at.after(new Date());
         } catch (SQLException e) {
             long duration = timer.millis();
             String logFormat = new LogBuilder()
@@ -103,16 +133,14 @@ public class AuthServices implements IAuthServices {
     };
 
     @Override
-    public boolean isValidEmail(String email) {
-        return AuthConstants.getEmailRegex().matcher(email).matches();
-    }
+    public boolean isValidEmail(String email) { return email != null && AuthConstants.getEmailRegex().matcher(email).matches(); }
 
     @Override
-    public boolean isValidPassword(String password) { return AuthConstants.getPasswordRegex().matcher(password).matches(); }
+    public boolean isValidPassword(String password) { return password != null && AuthConstants.getPasswordRegex().matcher(password).matches(); }
 
     @Override
     public Session getSession() {
-        return session;
+        return this.session;
     }
 
     @Override
@@ -122,7 +150,7 @@ public class AuthServices implements IAuthServices {
 
     @Override
     public SessionData getSessionData() {
-        return session_data;
+        return this.session_data;
     }
 
     @Override
@@ -138,41 +166,63 @@ public class AuthServices implements IAuthServices {
 
     @Override
     public boolean login(String email, String password) {
-        String savedHashedPassword = dao.getHashedPassword(email);
-
-        if (savedHashedPassword == null || !checkPassword(password, savedHashedPassword)) {
+        if (email == null || password == null) {
+            logger.warning("AUTH SERVICES login(): email or password is null");
+            return false;
+        }
+        if (!isValidEmail(email) || !isValidPassword(password)) {
+            logger.warning("AUTH SERVICES login(): invalid email or password format");
             return false;
         }
 
-        session_data = dao.getSessionData(email);
+        String savedHashedPassword = dao.getHashedPassword(email);
+        System.out.println("[DEBUG] AUTH SERVICES [POST] - LOGIN PROCESS");
+        if (savedHashedPassword == null || !checkPassword(password, savedHashedPassword)) {
+            logger.info("AUTH SERVICES login(): no user found for email=" + email);
+            return false;
+        }
+        System.out.println("[DEBUG] AUTH SERVICES [POST] - VALID PWD");
 
-        dao.createSession(session_data.getId(), session_data.getEmail());
+        this.session_data = dao.getSessionData(email);
 
-        session = dao.getSession(session_data.getEmail());
+        System.out.println("[DEBUG] AUTH SERVICES [POST] - GET SESSION DATA");
+        System.out.println("[DEBUG] AUTH SERVICES [POST] - SD: " + session_data.toString());
 
-        return session != null;
+        dao.createSession(this.session_data.getId(), this.session_data.getEmail());
+
+        System.out.println("[DEBUG] AUTH SERVICES [POST] - Creating a session");
+
+        this.session = dao.getSession(this.session_data.getEmail());
+
+        System.out.println("[DEBUG] AUTH SERVICES [POST] - Session exists?: " + session.toString());
+
+        return this.session != null;
     }
 
     @Override
     public boolean signUp(String name, String email, String password) {
-        String nameId = generateNameId(name);
-        String hashedPassword = hashPassword(password);
-        boolean result = checkPassword(password, hashedPassword);
-
-        if (!result) {
+        if (name == null || name.isBlank() || !isValidEmail(email) || !isValidPassword(password)) {
             return false;
         }
 
+        if (dao.userExists(email)) return false;
+
+        String nameId = generateNameId(name);
+        String hashedPassword = hashPassword(password);
         return dao.createUser(name, nameId, email, hashedPassword);
     }
 
     @Override
     public void changePassword(String email, String password) {
-        dao.updateHashedPassword(email, password);
+        if (!isValidPassword(password)) {
+            throw new IllegalArgumentException("La nueva contraseña no cumple la política");
+        }
+        String hashed = hashPassword(password);
+        dao.updateHashedPassword(email, hashed);
     };
 
     @Override
-    public void logout() {
-        dao.deleteSession(session.getSessionKey());
+    public void logout(String sessionKey) {
+        dao.deleteSession(sessionKey);
     }
 }

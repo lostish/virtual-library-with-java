@@ -46,16 +46,17 @@ javac -Xlint:none -d bin -cp "lib/*" $(find src/sh/losti/app -name '*.java')
 
 echo "✅ Compilacion terminada!"
 
-# Cargar las variables al archivo setenv.sh
-
-./scripts/mount-env.sh "$SETENV_SH"
-
 # 📌 Despliegue de la aplicación
 echo "Limpiando despliegue anterior..."
 rm -rf "$DEPLOY_DIR"
 mkdir -p "$DEPLOY_DIR/WEB-INF/classes/sh/losti"
 mkdir -p "$DEPLOY_DIR/WEB-INF/lib"
 mkdir -p "$DEPLOY_DIR/WEB-INF/resources"
+
+# Cargar las variables al archivo setenv.sh
+# ./scripts/mount-env.sh "$SETENV_SH"
+echo "📦 Copiando .env a despliegue..."
+cp .env "$DEPLOY_DIR/WEB-INF/classes/"
 
 # Copiar archivos JSP y recursos estáticos
 cp -r src/sh/losti/webapp/* "$DEPLOY_DIR"
@@ -65,7 +66,5 @@ cp -r bin/sh/losti/app "$DEPLOY_DIR/WEB-INF/classes/sh/losti/"
 cp -r lib/*.jar "$DEPLOY_DIR/WEB-INF/lib"
 # Copiar archivos PDF protegidos
 cp -r "$RESOURCES_SOURCE_DIR"/* "$BOOK_RESOURCES_DEPLOY_DIR"
-
-
 
 echo "✅ Despliegue completado en $DEPLOY_DIR"

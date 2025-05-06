@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/auth/sign-in")
-public class LoginServlet extends HttpServlet {
+public class SignInServlet extends HttpServlet {
     private final AuthServices auth = AuthServices.getInstance();
 
     @Override
@@ -27,18 +27,27 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
+        String ctx = req.getContextPath();
+
+        System.out.println("[DEBUG] Llamando a los valores de LOGIN SERVLET [POST]");
+        System.out.println("[DEBUG] email: " + email);
+        System.out.println("[DEBUG] password: " + password);
 
         res.setContentType("application/json");
 
         if (!auth.isValidEmail(email) || !auth.isValidPassword(password)) {
             res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             res.getWriter().write("{\"error\": \"Email o contraseña inválidos\"}");
+            System.out.println("[DEBUG] LOGIN SERVLET [POST] - No pasaron las expresiones regulares");
             return;
         }
 
         if (auth.login(email, password)) {
             Session session = auth.getSession();
             SessionData sessionData = auth.getSessionData();
+
+            System.out.println("[DEBUG] LOGIN SERVLET [POST] - session: " + session.toString());
+            System.out.println("[DEBUG] LOGIN SERVLET [POST] - session data: " + sessionData.toString());
 
             Cookie sessionCookie = new Cookie("session", session.toString());
             sessionCookie.setMaxAge(3 * 24 * 60 * 60);
@@ -50,11 +59,14 @@ public class LoginServlet extends HttpServlet {
 
             res.addCookie(sessionCookie);
             res.addCookie(sessionDataCookie);
-            res.sendRedirect(req.getContextPath() + "/account");
-        } else {
-            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            res.getWriter().write("{\"error\": \"Credenciales inválidas\"}");
+            System.out.println("[DEBUG] LOGIN SERVLET [POST] - Se redirecciono a '/account'");
+            res.sendRedirect(ctx + "/account");
+            return;
         }
 
+        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        res.getWriter().write("{\"error\": \"Credenciales inválidas\"}");
+        res.sendRedirect(ctx + "/unauthorized");
+        System.out.println("[DEBUG] LOGIN SERVLET [POST] - Inicio de secciòn no autorizado");
     }
 }

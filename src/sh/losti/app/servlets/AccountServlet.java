@@ -46,14 +46,14 @@ public class AccountServlet extends HttpServlet {
         if ((pathInfo == null || pathInfo.equals("/")) && isLoggedIn) {
             res.setStatus(HttpServletResponse.SC_OK);
             res.setHeader("Authentication", "AUTHORIZED");
-            res.getWriter().write("");
+            req.getRequestDispatcher("WEB-INF/views/clients/private-profile.jsp").forward(req, res);
             return;
         }
+
 
         if (pathInfo != null && pathInfo.equals("/settings") && isLoggedIn) {
             res.setStatus(HttpServletResponse.SC_OK);
             res.setHeader("Authentication", "AUTHORIZED");
-            res.getWriter().write("");
             return;
         }
 

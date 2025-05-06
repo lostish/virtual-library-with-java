@@ -15,5 +15,28 @@
       href="http://localhost:8080/virtual-library/globals.css"
     />
   </head>
-  <body></body>
+  <body>
+      <form class="form-body" method="post" action="<%=request.getContextPath()%>/upload-book" enctype="multipart/form-data">
+          <div class="form-group">
+            <input type="file" name="book_file" accept=".pdf,.doc,.docx,.md" required />
+            <button type="submit">Subir</button>
+          </div>
+      </form>
+
+      <%
+          String message = (String) request.getAttribute("message");
+          if (message != null) {
+      %>
+          <p><strong><%= message %></strong></p>
+      <%
+          }
+          String uploadedFile = (String) request.getAttribute("uploaded_file");
+          if (uploadedFile != null) {
+      %>
+          <p>Archivo subido: <%= uploadedFile %></p>
+      <%
+          }
+      %>
+
+  </body>
 </html>

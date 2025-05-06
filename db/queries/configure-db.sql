@@ -45,7 +45,7 @@ CREATE TABLE users (
     password        VARCHAR(255) NOT NULL,
     state           CHAR(8) CHECK(state IN('ACTIVE', 'INACTIVE', 'DELETED')) NOT NULL DEFAULT 'INACTIVE',
     role            CHAR(6) CHECK(role IN('ADMIN', 'HELPER', 'USER')) NOT NULL DEFAULT 'USER',
-    last_login      DATETIME2 NOT NULL,
+    last_login      DATETIME2,
     created_at      DATETIME2 DEFAULT SYSUTCDATETIME(),
     updated_at      DATETIME2 DEFAULT SYSUTCDATETIME()
 );
@@ -124,6 +124,7 @@ CREATE TABLE book_post (
 CREATE TABLE book_resource (
     book_resource_id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
     book_post_id     INT NOT NULL,
+    resource_type     VARCHAR(28),
     book_resource_url VARCHAR(MAX),
     created_at      DATETIME2 DEFAULT SYSUTCDATETIME(),
     updated_at      DATETIME2 DEFAULT SYSUTCDATETIME(),

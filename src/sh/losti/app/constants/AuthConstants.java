@@ -10,10 +10,11 @@ public class AuthConstants {
     private static final String signUpPath = "/auth/sign-up";
     private static final String regexAdmitResources = ".*\\.(css|js|png|jpg|jpeg|gif|svg|woff2?|ttf|eot|html)$";
     private static final Pattern EMAIL_REGEX = Pattern.compile(
-            "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+            "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
             Pattern.CASE_INSENSITIVE);
+    // "^[\\w.-]+@[\\w.-]+\\.\\w+$"
     private static final Pattern PASSWORD_REGEX = Pattern
-            .compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$");
+            .compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\",./<>?~`])(?=\\S+$).{8,}$");
 
 
     public static String[] getAuthCookies() {

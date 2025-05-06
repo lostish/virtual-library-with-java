@@ -55,7 +55,11 @@
             </div>
           </div>
 
-          <form class="form-body" action="/auth/sign-in" method="POST">
+          <form
+            class="form-body"
+            action="${pageContext.request.contextPath}/auth/sign-in"
+            method="POST"
+          >
             <div class="form-group">
               <label for="email">Correo electrónico</label>
               <input

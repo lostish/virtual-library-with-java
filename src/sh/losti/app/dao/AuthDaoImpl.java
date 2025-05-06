@@ -22,18 +22,17 @@ public class AuthDaoImpl implements IDaoAuth {
     private static final String VERIFY_SESSION = """
                 SELECT s.session_id, s.user_id, s.session_key, s.expires_at,
                            u.name, u.nameId, u.email
-                    FROM sessions s
+                    FROM session s
                     JOIN users u ON s.user_id = u.id
                     WHERE s.session_key = ?
-                    LIMIT 1
             """;
-    private static final String CREATE_SESSION = "INSERT INTO sessions (user_id, session_key, expires_at) VALUES (?, ?, ?)";
-    private static final String GET_CURRENT_SESSION = "SELECT session_id, user_id, session_key, created_at, expires_at FROM sessions WHERE session_key=? LIMIT 1";
-    private static final String DELETE_SESSION = "DELETE FROM sessions WHERE session_key=?";
-    private static final String LOGIN_GET_DATA = "SELECT id, name, nameId, email FROM users WHERE email = ? LIMIT 1";
-    private static final String LOGIN_GET_HASHED_PWD = "SELECT password FROM users WHERE email = ? LIMIT 1";
-    private static final String CREATE_USER = "INSERT INTO users (name, nameId, email, password) VALUES (?, ?, ?, ?)";
-    private static final String GET_SESSION_DATA = "SELECT id, name, nameId, email FROM users WHERE id = ? AND email = ? LIMIT 1";
+    private static final String CREATE_SESSION = "INSERT INTO session (user_id, session_key, expires_at) VALUES (?, ?, ?)";
+    private static final String GET_CURRENT_SESSION = "SELECT session_id, user_id, session_key, created_at, expires_at FROM session WHERE session_key=?";
+    private static final String DELETE_SESSION = "DELETE FROM session WHERE session_key=?";
+    private static final String LOGIN_GET_DATA = "SELECT id, name, nameId, email FROM users WHERE email = ?";
+    private static final String LOGIN_GET_HASHED_PWD = "SELECT TOP 1 password FROM users WHERE email = ?";
+    private static final String CREATE_USER = "INSERT INTO users (name, name_id, email, password) VALUES (?, ?, ?, ?)";
+    private static final String GET_SESSION_DATA = "SELECT id, name, nameId, email FROM users WHERE id = ? AND email = ?";
     private static final String UPADTE_USER_PWD = "UPDATE users SET password = ? WHERE email = ?";
 
     private AuthDaoImpl() {}
@@ -45,6 +44,19 @@ public class AuthDaoImpl implements IDaoAuth {
         return instance;
     }
 
+    public boolean userExists(String email) {
+        String sql = "SELECT TOP 1 user_id FROM users WHERE email = ?";
+        try (PreparedStatement ps = Client.getPreparedStatement(sql)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error al verificar usuario", e);
+            return false;
+        }
+    }
+
     @Override
     public boolean createUser(String name, String nameId, String email, String password) {
         try (PreparedStatement ps = Client.getPreparedStatement(CREATE_USER)) {
@@ -52,10 +64,9 @@ public class AuthDaoImpl implements IDaoAuth {
             ps.setString(2, nameId);
             ps.setString(3, email);
             ps.setString(4, password);
-            ps.executeUpdate();
-            return true;
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "% AUTH SERVICES ERROR: %s", e);
+            logger.log(Level.SEVERE, "% AUTH DAO IMPL ERROR: %s" + e.getMessage(), e);
             return false;
         }
     }
@@ -121,14 +132,12 @@ public class AuthDaoImpl implements IDaoAuth {
     public String getHashedPassword(String email) {
         try (PreparedStatement ps = Client.getPreparedStatement(LOGIN_GET_HASHED_PWD)) {
             ps.setString(1, email);
-            ps.executeQuery();
-            ResultSet rs = ps.getResultSet();
-
-            if (!rs.next()) throw new SQLException();
-
-            return rs.getString(1);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? rs.getString("password") : null;
+            }
         } catch (SQLException e) {
             e.fillInStackTrace();
+            logger.severe(e.getMessage());
             return null;
         }
     }
@@ -138,7 +147,7 @@ public class AuthDaoImpl implements IDaoAuth {
         try (PreparedStatement ps = Client.getPreparedStatement(UPADTE_USER_PWD)) {
             ps.setString(1, newPwd);
             ps.setString(2, email);
-            int rs =  ps.executeUpdate();
+            int rs = ps.executeUpdate();
 
             if (rs > 0) {
                 logger.log(Level.INFO, "% AUTH DAO IMPL - Update password");
@@ -184,7 +193,7 @@ public class AuthDaoImpl implements IDaoAuth {
             ps.setTimestamp(3, expiresAt);
             ps.executeUpdate();
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "% AUTH SERVICES ERROR: %s", e);
+            logger.log(Level.SEVERE, "% AUTH DAO ERROR: %s", e);
         }
     }
 
@@ -192,19 +201,18 @@ public class AuthDaoImpl implements IDaoAuth {
     public Session getSession(String email) {
         try (PreparedStatement ps = Client.getPreparedStatement(GET_CURRENT_SESSION)) {
             ps.setString(1, email);
-            ResultSet rs = ps.executeQuery();
-
-            if (!rs.next()) throw new SQLException();
-
-            return new Session(
-                    rs.getInt(1),
-                    rs.getInt(2),
-                    rs.getString(3),
-                    rs.getTimestamp(4),
-                    rs.getTimestamp(5)
-            );
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) return null;
+                return new Session(
+                        rs.getInt("session_id"),
+                        rs.getInt("user_id"),
+                        rs.getString("session_key"),
+                        new Date(rs.getTimestamp("created_at").getTime()),
+                        new Date(rs.getTimestamp("expires_at").getTime())
+                );
+            }
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, "% AUTH SERVICES ERROR: %s", e);
+            logger.log(Level.SEVERE, "% AUTH DAO ERROR: %s", e);
             return null;
         }
     }

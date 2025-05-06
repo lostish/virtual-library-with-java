@@ -18,5 +18,5 @@ public interface IAuthServices {
     boolean login(String email, String password);
     boolean signUp(String name, String email, String password);
     void changePassword(String email, String password);
-    void logout();
+    void logout(String sessionKey);
 }

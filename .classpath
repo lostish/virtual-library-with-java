@@ -7,5 +7,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/json"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/sqlite-jdbc-3.49.1.0"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/mssql-jdbc-12.10.0.jre11"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/java-dotenv-5.2.2"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/kotlin-stdlib-1.9.0"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
